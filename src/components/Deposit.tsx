@@ -1,11 +1,11 @@
-import { makeRatio } from "@agoric/zoe/src/contractSupport/index.js";
-import { AmountInput, useAgoric } from "@agoric/react-components";
-import { stringifyValue } from "@agoric/web-components";
-import { useState } from "react";
-import clsx from "clsx";
-import { divideBy } from "@agoric/zoe/src/contractSupport/ratio";
-import { toast } from "react-toastify";
-import { Oval } from "react-loader-spinner";
+import { makeRatio } from '@agoric/zoe/src/contractSupport/index.js';
+import { AmountInput, useAgoric } from '@agoric/react-components';
+import { stringifyValue } from '@agoric/web-components';
+import { useState } from 'react';
+import clsx from 'clsx';
+import { divideBy } from '@agoric/zoe/src/contractSupport/ratio';
+import { toast } from 'react-toastify';
+import { Oval } from 'react-loader-spinner';
 
 interface Props {
   shareWorth: ReturnType<typeof makeRatio> | undefined;
@@ -16,8 +16,8 @@ const Deposit = ({ shareWorth }: Props) => {
   const [inProgress, setInProgress] = useState(false);
   const { purses, makeOffer } = useAgoric();
   const usdcPurseAmount = purses?.find(
-    ({ pursePetname }) => pursePetname === "USDC"
-  )?.currentAmount as Amount<"nat">;
+    ({ pursePetname }) => pursePetname === 'USDC'
+  )?.currentAmount as Amount<'nat'>;
   const usdcBalance = usdcPurseAmount?.value ?? 0n;
 
   const isMaxExceeded = !!value && value > usdcBalance;
@@ -38,9 +38,9 @@ const Deposit = ({ shareWorth }: Props) => {
     };
 
     const invitationSpec = {
-      source: "agoricContract",
-      instancePath: ["fastUsdc"],
-      callPipe: [["makeDepositInvitation", []]],
+      source: 'agoricContract',
+      instancePath: ['fastUsdc'],
+      callPipe: [['makeDepositInvitation', []]],
     };
 
     assert(makeOffer);
@@ -50,16 +50,16 @@ const Deposit = ({ shareWorth }: Props) => {
       proposal,
       undefined,
       (update: { status: string; data?: unknown }) => {
-        if (update.status === "error") {
+        if (update.status === 'error') {
           toast.error(`Offer Error: ${update.data}`);
           setInProgress(false);
         }
-        if (update.status === "accepted") {
-          toast.success("Offer Accepted");
+        if (update.status === 'accepted') {
+          toast.success('Offer Accepted');
           setInProgress(false);
         }
-        if (update.status === "refunded") {
-          toast.warning("Offer Refunded");
+        if (update.status === 'refunded') {
+          toast.warning('Offer Refunded');
           setInProgress(false);
         }
       }
@@ -81,21 +81,21 @@ const Deposit = ({ shareWorth }: Props) => {
         />
         <div
           className={clsx(
-            "text-gray-500 text-sm mt-1",
-            isMaxExceeded && "text-red-500"
+            'text-gray-500 text-sm mt-1',
+            isMaxExceeded && 'text-red-500'
           )}
         >
-          <span className="font-medium">Purse Balance:</span>{" "}
-          {stringifyValue(usdcBalance, "nat", 6)} USDC
+          <span className="font-medium">Purse Balance:</span>{' '}
+          {stringifyValue(usdcBalance, 'nat', 6)} USDC
         </div>
       </div>
       <button
         onClick={executeOffer}
         disabled={isDisabled}
         className={clsx(
-          "w-full flex flex-row items-center justify-center bg-agoric-red p-2 px-3 h-12 rounded-lg text-white hover:bg-opacity-85 active:bg-opacity-70 active:scale-95 transition-all outline-none ring-offset-2 focus:ring-2",
-          (isDisabled || inProgress) && "cursor-not-allowed",
-          isDisabled && "bg-gray-300"
+          'w-full flex flex-row items-center justify-center bg-agoric-red p-2 px-3 h-12 rounded-lg text-white hover:bg-opacity-85 active:bg-opacity-70 active:scale-95 transition-all outline-none ring-offset-2 focus:ring-2',
+          (isDisabled || inProgress) && 'cursor-not-allowed',
+          isDisabled && 'bg-gray-300'
         )}
       >
         {inProgress ? (
@@ -106,7 +106,7 @@ const Deposit = ({ shareWorth }: Props) => {
             secondaryColor="lightgray"
           />
         ) : (
-          "Deposit"
+          'Deposit'
         )}
       </button>
     </div>

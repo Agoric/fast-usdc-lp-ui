@@ -1,4 +1,4 @@
-import { ConnectWalletButton, NetworkDropdown } from "@agoric/react-components";
+import { ConnectWalletButton, NetworkDropdown } from '@agoric/react-components';
 
 const Header = () => {
   return (

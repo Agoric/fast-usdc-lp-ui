@@ -1,20 +1,20 @@
-import { type makeRatio } from "@agoric/zoe/src/contractSupport/index.js";
-import { useAgoric } from "@agoric/react-components";
-import { stringifyValue } from "@agoric/web-components";
-import { AgoricChainStoragePathKind } from "@agoric/rpc";
-import Deposit from "./Deposit";
-import InfoCard from "./InfoCard";
-import Withdraw from "./Withdraw";
-import { useEffect, useState } from "react";
-import { multiplyBy } from "@agoric/zoe/src/contractSupport/ratio";
-import { toast, type Id as ToastId } from "react-toastify";
+import { type makeRatio } from '@agoric/zoe/src/contractSupport/index.js';
+import { useAgoric } from '@agoric/react-components';
+import { stringifyValue } from '@agoric/web-components';
+import { AgoricChainStoragePathKind } from '@agoric/rpc';
+import Deposit from './Deposit';
+import InfoCard from './InfoCard';
+import Withdraw from './Withdraw';
+import { useEffect, useState } from 'react';
+import { multiplyBy } from '@agoric/zoe/src/contractSupport/ratio';
+import { toast, type Id as ToastId } from 'react-toastify';
 
 interface PoolMetrics {
-  encumberedBalance: Amount<"nat">;
-  totalBorrows: Amount<"nat">;
-  totalContractFees: Amount<"nat">;
-  totalPoolFees: Amount<"nat">;
-  totalRepays: Amount<"nat">;
+  encumberedBalance: Amount<'nat'>;
+  totalBorrows: Amount<'nat'>;
+  totalContractFees: Amount<'nat'>;
+  totalPoolFees: Amount<'nat'>;
+  totalRepays: Amount<'nat'>;
   shareWorth: ReturnType<typeof makeRatio>;
 }
 
@@ -25,12 +25,12 @@ const usePoolMetrics = () => {
 
   useEffect(() => {
     const cancel = chainStorageWatcher?.watchLatest<PoolMetrics>(
-      [AgoricChainStoragePathKind.Data, "published.fastUsdc.poolMetrics"],
-      (metrics) => {
+      [AgoricChainStoragePathKind.Data, 'published.fastUsdc.poolMetrics'],
+      metrics => {
         if (!metrics) {
           if (errorId && toast.isActive(errorId)) return;
           const id = toast.error(
-            "Could not read FastUSDC contract, is it deployed on chain?",
+            'Could not read FastUSDC contract, is it deployed on chain?',
             { autoClose: false }
           );
           setErrorId(id);
@@ -52,20 +52,20 @@ const Content = () => {
   const { purses } = useAgoric();
   const metrics = usePoolMetrics();
   const poolBalanceForDisplay = metrics
-    ? stringifyValue(metrics.shareWorth.numerator.value, "nat", 6)
-    : "0.00";
+    ? stringifyValue(metrics.shareWorth.numerator.value, 'nat', 6)
+    : '0.00';
 
   const awaitingSettlementForDisplay = metrics
-    ? stringifyValue(metrics.encumberedBalance.value, "nat", 6)
-    : "0.00";
+    ? stringifyValue(metrics.encumberedBalance.value, 'nat', 6)
+    : '0.00';
 
   const poolFeesForDisplay = metrics
-    ? stringifyValue(metrics.totalPoolFees.value, "nat", 6)
-    : "0.00";
+    ? stringifyValue(metrics.totalPoolFees.value, 'nat', 6)
+    : '0.00';
 
   const fastLPBalance = purses?.find(
-    ({ pursePetname }) => pursePetname === "FastLP"
-  )?.currentAmount as Amount<"nat">;
+    ({ pursePetname }) => pursePetname === 'FastLP'
+  )?.currentAmount as Amount<'nat'>;
 
   const shareWorth = metrics?.shareWorth;
 
@@ -89,7 +89,7 @@ const Content = () => {
         footer="USDC"
       />
       <InfoCard
-        data={`$${stringifyValue(availableToWithdraw, "nat", 6)}`}
+        data={`$${stringifyValue(availableToWithdraw, 'nat', 6)}`}
         label="Your Pool Share"
         footer={`${poolSharePercent}% of pool`}
       />
