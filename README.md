@@ -52,5 +52,3 @@ export default tseslint.config({
   },
 });
 ```
-
-# fu-lp-ui
