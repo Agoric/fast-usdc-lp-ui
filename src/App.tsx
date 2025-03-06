@@ -1,39 +1,42 @@
-import { AgoricProvider } from '@agoric/react-components';
-import { wallets } from 'cosmos-kit';
-import Header from './components/Header';
-import { ThemeProvider, useTheme } from '@interchain-ui/react';
-import { useEffect, useState } from 'react';
-import Content from './components/Content';
-import { toast, type Id as ToastId } from 'react-toastify';
-import '@agoric/react-components/dist/style.css';
+import { AgoricProvider } from "@agoric/react-components";
+import { wallets } from "cosmos-kit";
+import Header from "./components/Header";
+import { ThemeProvider, useTheme } from "@interchain-ui/react";
+import { useEffect, useState } from "react";
+import Content from "./components/Content";
+import { toast, type Id as ToastId } from "react-toastify";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import FAQ from "./components/FAQ";
+
+import "@agoric/react-components/dist/style.css";
 
 const localnet = {
   testChain: {
-    chainId: 'agoriclocal',
-    chainName: 'agoric-local',
+    chainId: "agoriclocal",
+    chainName: "agoric-local",
   },
   apis: {
-    rest: ['http://localhost:1317'],
-    rpc: ['http://localhost:26657'],
+    rest: ["http://localhost:1317"],
+    rpc: ["http://localhost:26657"],
   },
 };
 
 const devnet = {
   testChain: {
-    chainId: 'agoricdev-23',
-    chainName: 'agoric-devnet',
+    chainId: "agoricdev-23",
+    chainName: "agoric-devnet",
   },
   apis: {
-    rest: ['https://devnet.api.agoric.net:443'],
-    rpc: ['https://devnet.rpc.agoric.net:443'],
+    rest: ["https://devnet.api.agoric.net:443"],
+    rpc: ["https://devnet.rpc.agoric.net:443"],
   },
 };
 
 // Omit "testChain" to specify the apis for Agoric Mainnet.
 const mainnet = {
   apis: {
-    rest: ['https://main.api.agoric.net'],
-    rpc: ['https://main.rpc.agoric.net'],
+    rest: ["https://main.api.agoric.net"],
+    rpc: ["https://main.rpc.agoric.net"],
   },
 };
 
@@ -55,19 +58,25 @@ function App() {
   };
 
   return (
-    <ThemeProvider defaultTheme="light">
-      <div className={themeClass}>
-        <AgoricProvider
-          wallets={wallets.extension}
-          agoricNetworkConfigs={[localnet, devnet, mainnet]}
-          onConnectionError={onError}
-          modalTheme={{ defaultTheme: 'light' }}
-        >
-          <Header />
-          <Content />
-        </AgoricProvider>
-      </div>
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider defaultTheme="light">
+        <div className={themeClass}>
+          <AgoricProvider
+            wallets={wallets.extension}
+            agoricNetworkConfigs={[localnet, devnet, mainnet]}
+            onConnectionError={onError}
+            modalTheme={{ defaultTheme: "light" }}
+            defaultChainName="agoric"
+          >
+            <Header />
+            <Routes>
+              <Route path="/" element={<Content />} />
+              <Route path="/faq" element={<FAQ />} />
+            </Routes>
+          </AgoricProvider>
+        </div>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 
