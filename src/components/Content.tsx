@@ -31,13 +31,13 @@ const usePoolMetrics = () => {
           if (errorId && toast.isActive(errorId)) return;
           const id = toast.error(
             'Could not read FastUSDC contract, is it deployed on chain?',
-            { autoClose: false }
+            { autoClose: false },
           );
           setErrorId(id);
           return;
         }
         setMetrics(metrics);
-      }
+      },
     );
 
     return () => {
@@ -64,7 +64,7 @@ const Content = () => {
     : '0.00';
 
   const fastLPBalance = purses?.find(
-    ({ pursePetname }) => pursePetname === 'FastLP'
+    ({ pursePetname }) => pursePetname === 'FastLP',
   )?.currentAmount as Amount<'nat'>;
 
   const shareWorth = metrics?.shareWorth;

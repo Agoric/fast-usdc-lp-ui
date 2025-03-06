@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 type FAQSection = {
   title: string;
@@ -7,11 +7,11 @@ type FAQSection = {
 
 const FAQ = () => {
   const [expandedSections, setExpandedSections] = useState<Set<number>>(
-    new Set()
+    new Set(),
   );
 
   const toggleSection = (index: number) => {
-    setExpandedSections((prevExpanded) => {
+    setExpandedSections(prevExpanded => {
       const newExpanded = new Set(prevExpanded);
       if (newExpanded.has(index)) {
         newExpanded.delete(index);
@@ -24,7 +24,7 @@ const FAQ = () => {
 
   const faqSections: FAQSection[] = [
     {
-      title: "What does Fast USDC do?",
+      title: 'What does Fast USDC do?',
       content: (
         <p>
           Fast USDC is a product built with Agoric's on-chain Orchestration API.
@@ -40,7 +40,7 @@ const FAQ = () => {
       ),
     },
     {
-      title: "Dashboard Overview",
+      title: 'Dashboard Overview',
       content: (
         <div>
           <p>
@@ -64,7 +64,7 @@ const FAQ = () => {
       ),
     },
     {
-      title: "Wallet Connection",
+      title: 'Wallet Connection',
       content: (
         <div>
           <p>
@@ -97,7 +97,7 @@ const FAQ = () => {
       ),
     },
     {
-      title: "Deposits",
+      title: 'Deposits',
       content: (
         <div>
           <p>
@@ -135,7 +135,7 @@ const FAQ = () => {
       ),
     },
     {
-      title: "Withdrawals",
+      title: 'Withdrawals',
       content: (
         <div>
           <p>
@@ -175,7 +175,7 @@ const FAQ = () => {
       ),
     },
     {
-      title: "Pool Metrics",
+      title: 'Pool Metrics',
       content: (
         <div>
           <p>
@@ -215,7 +215,7 @@ const FAQ = () => {
       ),
     },
     {
-      title: "Support",
+      title: 'Support',
       content: (
         <div>
           <p>
@@ -255,7 +255,7 @@ const FAQ = () => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className={`h-5 w-5 transition-transform duration-300 ${
-                    expandedSections.has(index) ? "rotate-180" : ""
+                    expandedSections.has(index) ? 'rotate-180' : ''
                   }`}
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -272,8 +272,8 @@ const FAQ = () => {
             <div
               className={`grid transition-all duration-300 ease-in-out ${
                 expandedSections.has(index)
-                  ? "grid-rows-[1fr]"
-                  : "grid-rows-[0fr]"
+                  ? 'grid-rows-[1fr]'
+                  : 'grid-rows-[0fr]'
               }`}
             >
               <div className="overflow-hidden">

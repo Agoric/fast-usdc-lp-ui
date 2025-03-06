@@ -16,7 +16,7 @@ const Deposit = ({ shareWorth }: Props) => {
   const [inProgress, setInProgress] = useState(false);
   const { purses, makeOffer } = useAgoric();
   const usdcPurseAmount = purses?.find(
-    ({ pursePetname }) => pursePetname === 'USDC'
+    ({ pursePetname }) => pursePetname === 'USDC',
   )?.currentAmount as Amount<'nat'>;
   const usdcBalance = usdcPurseAmount?.value ?? 0n;
 
@@ -62,7 +62,7 @@ const Deposit = ({ shareWorth }: Props) => {
           toast.warning('Offer Refunded');
           setInProgress(false);
         }
-      }
+      },
     );
   };
 
@@ -82,7 +82,7 @@ const Deposit = ({ shareWorth }: Props) => {
         <div
           className={clsx(
             'text-gray-500 text-sm mt-1',
-            isMaxExceeded && 'text-red-500'
+            isMaxExceeded && 'text-red-500',
           )}
         >
           <span className="font-medium">Purse Balance:</span>{' '}
@@ -95,7 +95,7 @@ const Deposit = ({ shareWorth }: Props) => {
         className={clsx(
           'w-full flex flex-row items-center justify-center bg-agoric-red p-2 px-3 h-12 rounded-lg text-white hover:bg-opacity-85 active:bg-opacity-70 active:scale-95 transition-all outline-none ring-offset-2 focus:ring-2',
           (isDisabled || inProgress) && 'cursor-not-allowed',
-          isDisabled && 'bg-gray-300'
+          isDisabled && 'bg-gray-300',
         )}
       >
         {inProgress ? (

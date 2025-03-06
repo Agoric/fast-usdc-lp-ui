@@ -1,6 +1,6 @@
-import { ConnectWalletButton, NetworkDropdown } from "@agoric/react-components";
-import { NavLink, useLocation } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { ConnectWalletButton, NetworkDropdown } from '@agoric/react-components';
+import { NavLink, useLocation } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 
 const Header = () => {
   const location = useLocation();
@@ -8,15 +8,15 @@ const Header = () => {
   const homeRef = useRef<HTMLAnchorElement | null>(null);
   const faqRef = useRef<HTMLAnchorElement | null>(null);
   const [indicatorStyle, setIndicatorStyle] = useState({
-    left: "0",
-    width: "0",
+    left: '0',
+    width: '0',
   });
 
   // Update active link based on current route
   useEffect(() => {
-    if (location.pathname === "/") {
+    if (location.pathname === '/') {
       setActiveIndex(0);
-    } else if (location.pathname === "/faq") {
+    } else if (location.pathname === '/faq') {
       setActiveIndex(1);
     }
   }, [location]);
@@ -37,9 +37,9 @@ const Header = () => {
 
     updateIndicator();
     // Update on window resize
-    window.addEventListener("resize", updateIndicator);
+    window.addEventListener('resize', updateIndicator);
     return () => {
-      window.removeEventListener("resize", updateIndicator);
+      window.removeEventListener('resize', updateIndicator);
     };
   }, [activeIndex]);
 
@@ -58,8 +58,8 @@ const Header = () => {
               className={({ isActive }) =>
                 `text-lg py-2 transition-colors duration-200 ${
                   isActive
-                    ? "text-agoric-red font-medium"
-                    : "text-gray-800 hover:text-agoric-red"
+                    ? 'text-agoric-red font-medium'
+                    : 'text-gray-800 hover:text-agoric-red'
                 }`
               }
             >
@@ -71,8 +71,8 @@ const Header = () => {
               className={({ isActive }) =>
                 `text-lg py-2 transition-colors duration-200 ${
                   isActive
-                    ? "text-agoric-red font-medium"
-                    : "text-gray-800 hover:text-agoric-red"
+                    ? 'text-agoric-red font-medium'
+                    : 'text-gray-800 hover:text-agoric-red'
                 }`
               }
             >
