@@ -44,8 +44,8 @@ const Header = () => {
   }, [activeIndex]);
 
   return (
-    <div className="w-full sticky top-0 sm:h-16 bg-white flex items-center justify-center md:justify-between flex-row shadow-md px-4">
-      <div className="hidden md:flex flex-row justify-start items-center gap-2">
+    <div className="w-full sticky top-0 sm:h-16 bg-white flex items-center justify-center lg:justify-between flex-row shadow-md px-4">
+      <div className="hidden lg:flex flex-row justify-start items-center gap-2">
         <img className="h-12" src="Agoric-logo-color.svg" />
         <h1 className="text-2xl text-gray-800">Fast USDC</h1>
       </div>
