@@ -5,6 +5,9 @@ import { ThemeProvider, useTheme } from '@interchain-ui/react';
 import { useEffect, useState } from 'react';
 import Content from './components/Content';
 import { toast, type Id as ToastId } from 'react-toastify';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import FAQ from './components/FAQ';
+
 import '@agoric/react-components/dist/style.css';
 
 const localnet = {
@@ -55,19 +58,25 @@ function App() {
   };
 
   return (
-    <ThemeProvider defaultTheme="light">
-      <div className={themeClass}>
-        <AgoricProvider
-          wallets={wallets.extension}
-          agoricNetworkConfigs={[localnet, devnet, mainnet]}
-          onConnectionError={onError}
-          modalTheme={{ defaultTheme: 'light' }}
-        >
-          <Header />
-          <Content />
-        </AgoricProvider>
-      </div>
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider defaultTheme="light">
+        <div className={themeClass}>
+          <AgoricProvider
+            wallets={wallets.extension}
+            agoricNetworkConfigs={[localnet, devnet, mainnet]}
+            onConnectionError={onError}
+            modalTheme={{ defaultTheme: 'light' }}
+            defaultChainName="agoric"
+          >
+            <Header />
+            <Routes>
+              <Route path="/" element={<Content />} />
+              <Route path="/faq" element={<FAQ />} />
+            </Routes>
+          </AgoricProvider>
+        </div>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 

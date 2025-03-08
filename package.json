@@ -7,11 +7,14 @@
     "dev": "vite",
     "build": "tsc && NODE_OPTIONS=--max-old-space-size=4096 vite build",
     "lint": "eslint .",
+    "format": "prettier --write \"src/**/*\"",
+    "format:check": "prettier --check \"src/**/*\"",
     "preview": "vite preview"
   },
   "dependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "6.22.2"
   },
   "devDependencies": {
     "@agoric/ertp": "0.16.3-u18.1",
@@ -23,6 +26,7 @@
     "@interchain-ui/react": "1.21.18",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
+    "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "buffer": "^6.0.3",
@@ -33,6 +37,7 @@
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
     "postcss": "^8.4.49",
+    "prettier": "^3.5.3",
     "react-loader-spinner": "6.1.6",
     "react-toastify": "11.0.2",
     "ses": "^1.10.0",

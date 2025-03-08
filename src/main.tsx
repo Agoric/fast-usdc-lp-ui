@@ -9,5 +9,5 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
     <ToastContainer className="mt-16" />
-  </StrictMode>
+  </StrictMode>,
 );
