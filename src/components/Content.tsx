@@ -12,7 +12,7 @@ import {
 const Content = () => {
   usePoolMetricsData();
   const metrics = usePoolMetricsStore(state => state.metrics);
-  const { purses, address } = useAgoric();
+  const { purses, address, isSmartWalletProvisioned } = useAgoric();
 
   const shareWorth = metrics?.shareWorth;
 
@@ -58,7 +58,9 @@ const Content = () => {
   const isMetricsLoading = metrics === null;
 
   const isPoolShareLoading =
-    !!address && (poolSharePercent === null || maxAvailableToWithdraw === null);
+    !!address &&
+    isSmartWalletProvisioned !== false &&
+    (poolSharePercent === null || maxAvailableToWithdraw === null);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 p-9 gap-7 max-w-[100rem] mx-auto">

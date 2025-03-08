@@ -1,16 +1,21 @@
-import { ConnectWalletButton, NetworkDropdown } from '@agoric/react-components';
+import {
+  ConnectWalletButton,
+  NetworkDropdown,
+  useAgoric,
+} from '@agoric/react-components';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { useNetworkDropdownStore } from '../store/networkDropdownStore';
 
 const Header = () => {
   const location = useLocation();
+  const { chainName } = useAgoric();
   const [activeIndex, setActiveIndex] = useState(0);
   const homeRef = useRef<HTMLAnchorElement | null>(null);
   const faqRef = useRef<HTMLAnchorElement | null>(null);
-  const isNetworkDropdownVisible = useNetworkDropdownStore(
-    state => state.isVisible,
-  );
+  const isNetworkDropdownVisible =
+    useNetworkDropdownStore(state => state.isVisible) || chainName !== 'agoric';
+
   const [indicatorStyle, setIndicatorStyle] = useState({
     left: '0',
     width: '0',
