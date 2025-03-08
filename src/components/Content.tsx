@@ -1,107 +1,92 @@
-import { type makeRatio } from '@agoric/zoe/src/contractSupport/index.js';
 import { useAgoric } from '@agoric/react-components';
 import { stringifyValue } from '@agoric/web-components';
-import { AgoricChainStoragePathKind } from '@agoric/rpc';
 import Deposit from './Deposit';
 import InfoCard from './InfoCard';
 import Withdraw from './Withdraw';
-import { useEffect, useState } from 'react';
 import { multiplyBy } from '@agoric/zoe/src/contractSupport/ratio';
-import { toast, type Id as ToastId } from 'react-toastify';
-
-interface PoolMetrics {
-  encumberedBalance: Amount<'nat'>;
-  totalBorrows: Amount<'nat'>;
-  totalContractFees: Amount<'nat'>;
-  totalPoolFees: Amount<'nat'>;
-  totalRepays: Amount<'nat'>;
-  shareWorth: ReturnType<typeof makeRatio>;
-}
-
-const usePoolMetrics = () => {
-  const [metrics, setMetrics] = useState<PoolMetrics | null>(null);
-  const { chainStorageWatcher } = useAgoric();
-  const [errorId, setErrorId] = useState<ToastId | undefined>(undefined);
-
-  useEffect(() => {
-    const cancel = chainStorageWatcher?.watchLatest<PoolMetrics>(
-      [AgoricChainStoragePathKind.Data, 'published.fastUsdc.poolMetrics'],
-      metrics => {
-        if (!metrics) {
-          if (errorId && toast.isActive(errorId)) return;
-          const id = toast.error(
-            'Could not read FastUSDC contract, is it deployed on chain?',
-            { autoClose: false },
-          );
-          setErrorId(id);
-          return;
-        }
-        setMetrics(metrics);
-      },
-    );
-
-    return () => {
-      cancel?.();
-    };
-  }, [chainStorageWatcher, errorId]);
-
-  return metrics;
-};
+import {
+  usePoolMetricsData,
+  usePoolMetricsStore,
+} from '../store/poolMetricsStore';
 
 const Content = () => {
-  const { purses } = useAgoric();
-  const metrics = usePoolMetrics();
-  const poolBalanceForDisplay = metrics
-    ? stringifyValue(metrics.shareWorth.numerator.value, 'nat', 6)
-    : '0.00';
+  usePoolMetricsData();
+  const metrics = usePoolMetricsStore(state => state.metrics);
+  const { purses, address } = useAgoric();
 
-  const awaitingSettlementForDisplay = metrics
-    ? stringifyValue(metrics.encumberedBalance.value, 'nat', 6)
-    : '0.00';
+  const shareWorth = metrics?.shareWorth;
 
-  const poolFeesForDisplay = metrics
-    ? stringifyValue(metrics.totalPoolFees.value, 'nat', 6)
-    : '0.00';
+  const poolBalanceForDisplay =
+    shareWorth && stringifyValue(shareWorth.numerator.value, 'nat', 6);
+
+  const awaitingSettlementForDisplay =
+    metrics && stringifyValue(metrics.encumberedBalance.value, 'nat', 6);
+
+  const poolFeesForDisplay =
+    metrics && stringifyValue(metrics.totalPoolFees.value, 'nat', 6);
 
   const fastLPBalance = purses?.find(
     ({ pursePetname }) => pursePetname === 'FastLP',
   )?.currentAmount as Amount<'nat'>;
 
-  const shareWorth = metrics?.shareWorth;
-
-  const availableToWithdraw =
+  const maxAvailableToWithdraw =
     fastLPBalance && shareWorth
       ? multiplyBy(fastLPBalance, shareWorth).value
-      : 0n;
+      : null;
+
+  const unencumberedBalance =
+    metrics && shareWorth
+      ? shareWorth.numerator.value - metrics.encumberedBalance.value
+      : null;
+
+  const availableToWithdraw =
+    unencumberedBalance !== null && maxAvailableToWithdraw !== null
+      ? unencumberedBalance < maxAvailableToWithdraw
+        ? unencumberedBalance
+        : maxAvailableToWithdraw
+      : null;
 
   const poolShareBPS =
     shareWorth && fastLPBalance
       ? (fastLPBalance.value * 10_000n) / shareWorth.denominator.value
-      : 0n;
+      : null;
 
-  const poolSharePercent = (Number(poolShareBPS) / 100).toFixed(2);
+  const poolSharePercent = poolShareBPS
+    ? (Number(poolShareBPS) / 100).toFixed(2)
+    : null;
+
+  const isMetricsLoading = metrics === null;
+
+  const isPoolShareLoading =
+    !!address && (poolSharePercent === null || maxAvailableToWithdraw === null);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 p-9 gap-7 max-w-[100rem] mx-auto">
       <InfoCard
-        data={`$${poolBalanceForDisplay}`}
+        data={`$${poolBalanceForDisplay ?? '0'}`}
         label="Total Pool Balance"
         footer="USDC"
+        isLoading={isMetricsLoading}
       />
       <InfoCard
-        data={`$${stringifyValue(availableToWithdraw, 'nat', 6)}`}
+        data={`$${stringifyValue(maxAvailableToWithdraw ?? 0n, 'nat', 6)}`}
         label="Your Pool Share"
-        footer={`${poolSharePercent}% of pool`}
+        footer={
+          address ? `${poolSharePercent ?? 0}% of pool` : 'No wallet connected'
+        }
+        isLoading={isPoolShareLoading}
       />
       <InfoCard
-        data={`$${awaitingSettlementForDisplay}`}
+        data={`$${awaitingSettlementForDisplay ?? '0'}`}
         label="Awaiting Settlement"
         footer="USDC"
+        isLoading={isMetricsLoading}
       />
       <InfoCard
-        data={`$${poolFeesForDisplay}`}
+        data={`$${poolFeesForDisplay ?? '0'}`}
         label="Pool Fees Earned"
         footer="USDC"
+        isLoading={isMetricsLoading}
       />
       <Deposit shareWorth={shareWorth} />
       <Withdraw

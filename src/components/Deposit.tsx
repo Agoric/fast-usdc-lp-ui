@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { divideBy } from '@agoric/zoe/src/contractSupport/ratio';
 import { toast } from 'react-toastify';
 import { Oval } from 'react-loader-spinner';
+import Shimmer from './Shimmer';
 
 interface Props {
   shareWorth: ReturnType<typeof makeRatio> | undefined;
@@ -14,7 +15,7 @@ interface Props {
 const Deposit = ({ shareWorth }: Props) => {
   const [value, setValue] = useState<bigint | null>(null);
   const [inProgress, setInProgress] = useState(false);
-  const { purses, makeOffer } = useAgoric();
+  const { purses, makeOffer, address } = useAgoric();
   const usdcPurseAmount = purses?.find(
     ({ pursePetname }) => pursePetname === 'USDC',
   )?.currentAmount as Amount<'nat'>;
@@ -23,6 +24,9 @@ const Deposit = ({ shareWorth }: Props) => {
   const isMaxExceeded = !!value && value > usdcBalance;
   const isDisabled =
     !value || !shareWorth || !usdcPurseAmount || isMaxExceeded || !makeOffer;
+
+  // Determine the loading state for the footer
+  const isLoading = !!address && !purses;
 
   const executeOffer = () => {
     if (inProgress) return;
@@ -85,8 +89,18 @@ const Deposit = ({ shareWorth }: Props) => {
             isMaxExceeded && 'text-red-500',
           )}
         >
-          <span className="font-medium">Purse Balance:</span>{' '}
-          {stringifyValue(usdcBalance, 'nat', 6)} USDC
+          {!address ? (
+            <span>No wallet connected</span>
+          ) : isLoading ? (
+            <div className="mt-1">
+              <Shimmer height="20px" width="180px" />
+            </div>
+          ) : (
+            <>
+              <span className="font-medium">Purse Balance:</span>{' '}
+              {stringifyValue(usdcBalance, 'nat', 6)} USDC
+            </>
+          )}
         </div>
       </div>
       <button
