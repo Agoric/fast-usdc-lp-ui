@@ -5,3 +5,23 @@
 :root {
   --agoric-red: 204, 66, 70;
 }
+
+@keyframes shimmerWave {
+  0% {
+    transform: translateX(-150%);
+  }
+  100% {
+    transform: translateX(150%);
+  }
+}
+
+.shimmer-wave {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmerWave 2s infinite linear;
+  will-change: transform;
+}

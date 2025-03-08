@@ -6,23 +6,32 @@ import clsx from 'clsx';
 import { toast } from 'react-toastify';
 import { divideBy } from '@agoric/zoe/src/contractSupport/ratio';
 import { Oval } from 'react-loader-spinner';
+import Shimmer from './Shimmer';
 
 type Props = {
-  availableToWithdraw: bigint;
+  availableToWithdraw: bigint | null;
   shareWorth: ReturnType<typeof makeRatio> | undefined;
 };
 
 const Withdraw = ({ availableToWithdraw, shareWorth }: Props) => {
   const [value, setValue] = useState<bigint | null>(null);
   const [inProgress, setInProgress] = useState(false);
-  const { makeOffer, purses } = useAgoric();
+  const { makeOffer, purses, address } = useAgoric();
   const usdcPurseAmount = purses?.find(
     ({ pursePetname }) => pursePetname === 'USDC',
   )?.currentAmount as Amount<'nat'>;
 
-  const isMaxExceeded = !!value && value > availableToWithdraw;
+  const isMaxExceeded =
+    !!value && (!availableToWithdraw || value > availableToWithdraw);
   const isDisabled =
-    !value || !shareWorth || !usdcPurseAmount || isMaxExceeded || !makeOffer;
+    !value ||
+    !shareWorth ||
+    !usdcPurseAmount ||
+    isMaxExceeded ||
+    !makeOffer ||
+    !availableToWithdraw;
+
+  const isLoading = !!address && availableToWithdraw === null;
 
   const executeOffer = () => {
     if (inProgress) return;
@@ -85,8 +94,22 @@ const Withdraw = ({ availableToWithdraw, shareWorth }: Props) => {
             isMaxExceeded && 'text-red-500',
           )}
         >
-          <span className="font-medium">Max Withdrawable:</span>{' '}
-          {stringifyValue(availableToWithdraw, 'nat', 6)} USDC
+          {!address ? (
+            <span>No wallet connected</span>
+          ) : (
+            <>
+              <span className="font-medium">Max Withdrawable:</span>{' '}
+              {isLoading ? (
+                <Shimmer
+                  height="16px"
+                  width="120px"
+                  className="inline-block align-middle ml-1 -mt-[2px]"
+                />
+              ) : (
+                <>{stringifyValue(availableToWithdraw || 0n, 'nat', 6)} USDC</>
+              )}
+            </>
+          )}
         </div>
       </div>
       <button
