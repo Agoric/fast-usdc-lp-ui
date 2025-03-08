@@ -7,7 +7,6 @@
     "dev": "vite",
     "build": "tsc && NODE_OPTIONS=--max-old-space-size=4096 vite build",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
     "format": "prettier --write \"src/**/*\"",
     "format:check": "prettier --check \"src/**/*\"",
     "preview": "vite preview"
