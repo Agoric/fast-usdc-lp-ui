@@ -27,15 +27,16 @@ const FAQ = () => {
       title: 'What does Fast USDC do?',
       content: (
         <p>
-          Fast USDC is a product built with Agoric's on-chain Orchestration API.
-          It helps speed up USDC transfers between chains by reducing wait times
-          for users coming from EVM chains.
+          <b>Fast USDC</b> is a product built with Agoric's on-chain
+          Orchestration API. It helps speed up USDC transfers between chains by
+          reducing wait times for users coming from EVM chains.
           <br />
           <br />
-          Instead of waiting for the standard CCTP bridge to finalize, a
-          Liquidity Provider can front the USDC to the user right away, knowing
-          the official transfer is on its way. LPs can earn fees from users that
-          are willing to pay to get their funds quickly to the End destination.
+          Instead of waiting for the standard CCTP bridge to finalize, a{' '}
+          <b>Liquidity Provider</b> can front the USDC to the user right away,
+          knowing the official transfer is on its way. LPs can earn fees from
+          users that are willing to pay to get their funds quickly to the End
+          destination.
         </p>
       ),
     },
@@ -84,15 +85,6 @@ const FAQ = () => {
             <li>You're on the correct network</li>
             <li>You have USDC in your wallet</li>
           </ul>
-
-          <p className="mt-4">
-            <strong>Do I need to be on a specific network?</strong>
-          </p>
-          <p>
-            Yes, make sure you're connected to the right Agoric network e.g.
-            "Agoric" for Mainnet (as shown in the top right corner of the
-            interface).
-          </p>
         </div>
       ),
     },
@@ -222,11 +214,25 @@ const FAQ = () => {
             <strong>What should I do if I encounter issues?</strong>
           </p>
           <p>If you experience any issues:</p>
-          <ul className="list-disc pl-6 mt-2">
-            <li>Verify your network connection</li>
-            <li>Ensure you're on the correct network</li>
-            <li>Contact support in Discord if issues persist</li>
-          </ul>
+          <ol className="list-decimal pl-6 mt-2">
+            <li>
+              Join the Agoric Discord:{' '}
+              <a
+                href="https://agoric.com/discord"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:text-blue-700 underline"
+              >
+                https://agoric.com/discord
+              </a>
+            </li>
+            <li>Select the community role in the onboarding page</li>
+            <li>
+              Go to #get-roles channel (unlocked for server members) and select
+              the Fast USDC LP role
+            </li>
+            <li>Go to #fast-usdc-lp-support channel</li>
+          </ol>
         </div>
       ),
     },
