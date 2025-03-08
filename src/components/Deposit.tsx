@@ -26,7 +26,7 @@ const Deposit = ({ shareWorth }: Props) => {
     !value || !shareWorth || !usdcPurseAmount || isMaxExceeded || !makeOffer;
 
   // Determine the loading state for the footer
-  const isLoading = !!address && !purses;
+  const isLoading = !!address && !usdcPurseAmount;
 
   const executeOffer = () => {
     if (inProgress) return;
@@ -91,14 +91,18 @@ const Deposit = ({ shareWorth }: Props) => {
         >
           {!address ? (
             <span>No wallet connected</span>
-          ) : isLoading ? (
-            <div className="mt-1">
-              <Shimmer height="20px" width="180px" />
-            </div>
           ) : (
             <>
               <span className="font-medium">Purse Balance:</span>{' '}
-              {stringifyValue(usdcBalance, 'nat', 6)} USDC
+              {isLoading ? (
+                <Shimmer
+                  height="16px"
+                  width="120px"
+                  className="inline-block align-middle ml-1 -mt-[2px]"
+                />
+              ) : (
+                <>{stringifyValue(usdcBalance, 'nat', 6)} USDC</>
+              )}
             </>
           )}
         </div>

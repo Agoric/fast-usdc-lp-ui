@@ -96,14 +96,18 @@ const Withdraw = ({ availableToWithdraw, shareWorth }: Props) => {
         >
           {!address ? (
             <span>No wallet connected</span>
-          ) : isLoading ? (
-            <div className="mt-1">
-              <Shimmer height="20px" width="180px" />
-            </div>
           ) : (
             <>
               <span className="font-medium">Max Withdrawable:</span>{' '}
-              {stringifyValue(availableToWithdraw ?? 0n, 'nat', 6)} USDC
+              {isLoading ? (
+                <Shimmer
+                  height="16px"
+                  width="120px"
+                  className="inline-block align-middle ml-1 -mt-[2px]"
+                />
+              ) : (
+                <>{stringifyValue(availableToWithdraw || 0n, 'nat', 6)} USDC</>
+              )}
             </>
           )}
         </div>

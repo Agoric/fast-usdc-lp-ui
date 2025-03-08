@@ -13,10 +13,16 @@ const Shimmer = ({
 }: ShimmerProps) => {
   return (
     <div
-      className={`animate-pulse bg-gray-200 rounded ${className}`}
-      style={{ width, height }}
+      className={`relative overflow-hidden bg-slate-200 rounded ${className}`}
+      style={{
+        width,
+        height,
+        ...props.style,
+      }}
       {...props}
-    />
+    >
+      <div className="absolute inset-0 shimmer-wave" />
+    </div>
   );
 };
 

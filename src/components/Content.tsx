@@ -17,13 +17,13 @@ const Content = () => {
   const shareWorth = metrics?.shareWorth;
 
   const poolBalanceForDisplay =
-    shareWorth && stringifyValue(shareWorth.numerator.value, 'nat', 6);
+    shareWorth && stringifyValue(shareWorth.numerator.value, 'nat', 6, 4);
 
   const awaitingSettlementForDisplay =
-    metrics && stringifyValue(metrics.encumberedBalance.value, 'nat', 6);
+    metrics && stringifyValue(metrics.encumberedBalance.value, 'nat', 6, 4);
 
   const poolFeesForDisplay =
-    metrics && stringifyValue(metrics.totalPoolFees.value, 'nat', 6);
+    metrics && stringifyValue(metrics.totalPoolFees.value, 'nat', 6, 4);
 
   const fastLPBalance = purses?.find(
     ({ pursePetname }) => pursePetname === 'FastLP',
@@ -69,7 +69,7 @@ const Content = () => {
         isLoading={isMetricsLoading}
       />
       <InfoCard
-        data={`$${stringifyValue(maxAvailableToWithdraw ?? 0n, 'nat', 6)}`}
+        data={`$${stringifyValue(maxAvailableToWithdraw ?? 0n, 'nat', 6, 4)}`}
         label="Your Pool Share"
         footer={
           address ? `${poolSharePercent ?? 0}% of pool` : 'No wallet connected'
