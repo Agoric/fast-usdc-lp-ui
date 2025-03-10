@@ -1,7 +1,7 @@
 import { type makeRatio } from '@agoric/zoe/src/contractSupport/index.js';
 import { AmountInput, useAgoric } from '@agoric/react-components';
 import { stringifyValue } from '@agoric/web-components';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
 import { divideBy } from '@agoric/zoe/src/contractSupport/ratio';
@@ -11,11 +11,18 @@ import Shimmer from './Shimmer';
 type Props = {
   availableToWithdraw: bigint | null;
   shareWorth: ReturnType<typeof makeRatio> | undefined;
+  showMaxButton?: boolean;
 };
 
-const Withdraw = ({ availableToWithdraw, shareWorth }: Props) => {
+const Withdraw = ({
+  availableToWithdraw,
+  shareWorth,
+  showMaxButton = false,
+}: Props) => {
   const [value, setValue] = useState<bigint | null>(null);
   const [inProgress, setInProgress] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const inputRef = useRef<HTMLDivElement>(null);
   const { makeOffer, purses, address } = useAgoric();
   const usdcPurseAmount = purses?.find(
     ({ pursePetname }) => pursePetname === 'USDC',
@@ -32,6 +39,37 @@ const Withdraw = ({ availableToWithdraw, shareWorth }: Props) => {
     !availableToWithdraw;
 
   const isLoading = !!address && availableToWithdraw === null;
+
+  // Check if current value equals max
+  const isMaxSelected =
+    value !== null &&
+    availableToWithdraw !== null &&
+    value === availableToWithdraw;
+
+  // Handle focus events on the wrapper
+  useEffect(() => {
+    const handleFocusIn = () => setIsFocused(true);
+    const handleFocusOut = () => setIsFocused(false);
+
+    const container = inputRef.current;
+    if (container) {
+      container.addEventListener('focusin', handleFocusIn);
+      container.addEventListener('focusout', handleFocusOut);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('focusin', handleFocusIn);
+        container.removeEventListener('focusout', handleFocusOut);
+      }
+    };
+  }, []);
+
+  const setMaxAmount = () => {
+    if (availableToWithdraw) {
+      setValue(availableToWithdraw);
+    }
+  };
 
   const executeOffer = () => {
     if (inProgress) return;
@@ -76,21 +114,66 @@ const Withdraw = ({ availableToWithdraw, shareWorth }: Props) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow col-span-1 md:col-span-2 p-6">
-      <div className="text-xl font-semibold">Withdraw USDC</div>
-      <div className="my-6">
-        <div className="text-gray-500 font-semibold text-sm mb-1">
-          Amount to Withdraw
+    <div
+      className={
+        showMaxButton
+          ? ''
+          : 'bg-white rounded-lg shadow col-span-1 md:col-span-2 p-6'
+      }
+    >
+      {!showMaxButton && (
+        <div className="text-xl font-semibold mb-4">Withdraw USDC</div>
+      )}
+      <div>
+        {!showMaxButton && (
+          <div className="text-gray-500 font-semibold text-sm mb-1">
+            Amount to Withdraw
+          </div>
+        )}
+        <div className="mb-2">
+          <div
+            ref={inputRef}
+            className={clsx(
+              'flex items-center overflow-hidden border rounded-lg bg-white pr-3 transition-all',
+              isFocused
+                ? 'border-agoric-red ring-1 ring-agoric-red ring-opacity-50'
+                : 'border-gray-300',
+            )}
+          >
+            <div className="flex-grow">
+              <AmountInput
+                decimalPlaces={6}
+                value={value}
+                onChange={setValue}
+                className="border-0 text-gray-900 py-2 px-3 w-full focus:ring-0 focus:outline-none"
+              />
+            </div>
+
+            {showMaxButton && (
+              <button
+                onClick={setMaxAmount}
+                className={clsx(
+                  'flex-shrink-0 font-medium h-full py-1 px-3 text-xs transition-all',
+                  isMaxSelected
+                    ? 'bg-agoric-red bg-opacity-20 text-agoric-red font-bold shadow-sm rounded'
+                    : 'bg-gray-200 hover:bg-gray-300 text-gray-700 rounded',
+                )}
+                style={
+                  isMaxSelected
+                    ? {
+                        boxShadow: '0 0 6px rgba(220, 53, 69, 0.5)',
+                      }
+                    : {}
+                }
+              >
+                MAX
+              </button>
+            )}
+          </div>
         </div>
-        <AmountInput
-          decimalPlaces={6}
-          value={value}
-          onChange={setValue}
-          className="bg-white border border-gray-300 text-gray-900 rounded-lg py-2 px-3 w-full"
-        />
         <div
           className={clsx(
-            'text-gray-500 text-sm mt-1',
+            'text-gray-500 text-sm mb-3',
             isMaxExceeded && 'text-red-500',
           )}
         >
@@ -101,7 +184,7 @@ const Withdraw = ({ availableToWithdraw, shareWorth }: Props) => {
               <span className="font-medium">Max Withdrawable:</span>{' '}
               {isLoading ? (
                 <Shimmer
-                  height="16px"
+                  height="18px"
                   width="120px"
                   className="inline-block align-middle ml-1 -mt-[2px]"
                 />
@@ -116,15 +199,15 @@ const Withdraw = ({ availableToWithdraw, shareWorth }: Props) => {
         onClick={executeOffer}
         disabled={isDisabled}
         className={clsx(
-          'w-full flex flex-row items-center justify-center bg-agoric-red p-2 px-3 h-12 rounded-lg text-white hover:bg-opacity-85 active:bg-opacity-70 active:scale-95 transition-all outline-none ring-offset-2 focus:ring-2',
+          'w-full flex flex-row items-center justify-center bg-agoric-red p-2 px-3 h-10 rounded-lg text-white hover:bg-opacity-85 active:bg-opacity-70 active:scale-95 transition-all outline-none ring-offset-2 focus:ring-2',
           (isDisabled || inProgress) && 'cursor-not-allowed',
           isDisabled && 'bg-gray-300',
         )}
       >
         {inProgress ? (
           <Oval
-            height={24}
-            width={24}
+            height={20}
+            width={20}
             color="white"
             secondaryColor="lightgray"
           />
