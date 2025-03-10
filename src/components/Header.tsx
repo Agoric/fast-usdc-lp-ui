@@ -53,7 +53,7 @@ const Header = () => {
   }, [activeIndex]);
 
   return (
-    <div className="w-full sticky top-0 sm:h-16 bg-white flex items-center justify-center lg:justify-between flex-row shadow-md px-4">
+    <div className="w-full sticky top-0 z-50 sm:h-16 bg-white flex items-center justify-center lg:justify-between flex-row shadow-md px-4">
       <div className="hidden lg:flex flex-row justify-start items-center gap-2">
         <img className="h-12" src="Agoric-logo-color.svg" />
         <h1 className="text-2xl text-gray-800">Fast USDC</h1>
@@ -90,10 +90,11 @@ const Header = () => {
           </div>
           {/* Animated underline indicator */}
           <div
-            className="absolute bottom-0 h-0.5 bg-agoric-red transition-all duration-300 ease-in-out"
+            className="absolute bottom-0 h-0.5 bg-agoric-red  transition-all duration-300 ease-in-out"
             style={{
               left: indicatorStyle.left,
               width: indicatorStyle.width,
+              display: location.pathname === '/terms' ? 'none' : 'block',
             }}
           />
         </nav>

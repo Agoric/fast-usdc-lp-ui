@@ -7,6 +7,7 @@ import Content from './components/Content';
 import { toast, type Id as ToastId } from 'react-toastify';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import FAQ from './components/FAQ';
+import Terms from './components/Terms';
 
 import '@agoric/react-components/dist/style.css';
 
@@ -72,6 +73,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Content />} />
               <Route path="/faq" element={<FAQ />} />
+              <Route path="/terms" element={<Terms />} />
             </Routes>
           </AgoricProvider>
         </div>
