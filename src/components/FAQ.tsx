@@ -99,8 +99,15 @@ const FAQ = () => {
             <li>Check your Purse Balance in the Deposit USDC section</li>
             <li>Enter an amount up to your available purse balance</li>
             <li>
-              If you don't have any USDC, you may source it from
-              https://www.usdc.com/
+              If you don't have any USDC, you may source it from{' '}
+              <a
+                href="https://www.usdc.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:text-blue-700 underline"
+              >
+                https://usdc.com
+              </a>
             </li>
             <li>Click the "Deposit" button</li>
             <li>Confirm the transaction in your wallet</li>
@@ -228,10 +235,12 @@ const FAQ = () => {
             </li>
             <li>Select the community role in the onboarding page</li>
             <li>
-              Go to #get-roles channel (unlocked for server members) and select
-              the Fast USDC LP role
+              Go to <i>#get-roles channel</i> (unlocked for server members) and
+              select the Fast USDC LP role
             </li>
-            <li>Go to #fast-usdc-lp-support channel</li>
+            <li>
+              Go to <i>#fast-usdc-lp-support</i> channel
+            </li>
           </ol>
         </div>
       ),
