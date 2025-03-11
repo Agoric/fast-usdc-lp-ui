@@ -118,7 +118,7 @@ const Content = () => {
           </div>
 
           <div className="space-y-4">
-            {/* Total Pool Balance - Simplified design with no borders or shadows */}
+            {/* Total Pool Balance */}
             <div className="px-4 py-3 hover:bg-gray-50/40 transition-all duration-300 rounded-lg group">
               <div className="text-gray-700 font-medium text-sm mb-1">
                 Total Pool Balance
@@ -136,7 +136,7 @@ const Content = () => {
             {/* Subtle divider */}
             <div className="h-px bg-gray-100/70 w-full mx-4"></div>
 
-            {/* Awaiting Settlement - Simplified design */}
+            {/* Awaiting Settlement */}
             <div className="px-4 py-3 hover:bg-gray-50/40 transition-all duration-300 rounded-lg group">
               <div className="text-gray-700 font-medium text-sm mb-1">
                 Awaiting Settlement
@@ -154,7 +154,7 @@ const Content = () => {
             {/* Subtle divider */}
             <div className="h-px bg-gray-100/70 w-full mx-4"></div>
 
-            {/* Pool Fees Earned - Simplified design */}
+            {/* Pool Fees Earned */}
             <div className="px-4 py-3 hover:bg-gray-50/40 transition-all duration-300 rounded-lg group">
               <div className="text-gray-700 font-medium text-sm mb-1">
                 Pool Fees Earned
@@ -180,7 +180,7 @@ const Content = () => {
             Your Pool Share
           </div>
 
-          {/* User's Pool Share Info - More minimal with no borders or backgrounds */}
+          {/* User's Pool Share Info */}
           <div className="mb-6 px-2">
             <table className="w-full">
               <tbody>
@@ -254,9 +254,9 @@ const Content = () => {
             </table>
           </div>
 
-          {/* Combined Deposit and Withdraw Section with minimal design */}
+          {/* Combined Deposit and Withdraw Section */}
           <div className="transition-all duration-300">
-            {/* Tabs for Deposit and Withdraw with cleaner design and animated indicator */}
+            {/* Tabs for Deposit and Withdraw with animated indicator */}
             <div className="flex border-b border-gray-100 h-12 relative">
               <button
                 ref={depositTabRef}
@@ -291,7 +291,7 @@ const Content = () => {
               ></div>
             </div>
 
-            {/* Tab Content with simplified padding */}
+            {/* Tab Content */}
             <div className="p-4">
               {activeTab === 'deposit' ? (
                 <Deposit shareWorth={shareWorth} showMaxButton={true} />
