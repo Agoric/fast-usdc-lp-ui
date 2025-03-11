@@ -150,7 +150,7 @@ const Deposit = ({ shareWorth, showMaxButton = false }: Props) => {
               <span className="font-medium">Purse Balance:</span>{' '}
               {isLoading ? (
                 <Shimmer
-                  height="16px"
+                  height="14px"
                   width="120px"
                   className="inline-block align-middle ml-1 -mt-[2px]"
                 />

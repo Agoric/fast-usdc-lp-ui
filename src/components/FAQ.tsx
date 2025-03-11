@@ -149,21 +149,21 @@ If you experience any issues:
 
       <div className="top-0 left-1/2 transform mx-auto w-16 h-1 bg-agoric-red/70 rounded-full mb-8"></div>
 
-      <div className="space-y-5">
+      <div className="space-y-4">
         {faqSections.map((section, index) => (
           <div
             key={index}
-            className="border border-gray-200 rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:border-gray-300/80"
+            className="border border-gray-100 rounded-lg overflow-hidden transition-all duration-300 hover:border-gray-200"
           >
             <button
-              className="w-full px-6 py-4 text-left bg-white hover:bg-gray-50 flex justify-between items-center focus:outline-none"
+              className="w-full px-6 py-4 text-left bg-white hover:bg-gray-50/70 flex justify-between items-center focus:outline-none"
               onClick={() => toggleSection(index)}
             >
               <h3 className="text-lg font-medium text-gray-800">
                 {section.title}
               </h3>
               <span
-                className={`${expandedSections.has(index) ? 'text-agoric-red/80' : 'text-gray-600'} transition-colors duration-300`}
+                className={`${expandedSections.has(index) ? 'text-agoric-red' : 'text-gray-400'} transition-colors duration-300`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -190,7 +190,7 @@ If you experience any issues:
               }`}
             >
               <div className="overflow-hidden">
-                <div className="px-6 py-5 bg-white border-t border-gray-200 prose prose-slate max-w-none prose-headings:text-gray-700 prose-p:leading-relaxed prose-ul:space-y-1 prose-li:text-gray-600">
+                <div className="px-6 py-5 bg-gray-50/30 border-t border-gray-100 prose prose-slate max-w-none prose-headings:text-gray-700 prose-p:leading-relaxed prose-ul:space-y-1 prose-li:text-gray-600">
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>
                     {section.content}
                   </ReactMarkdown>

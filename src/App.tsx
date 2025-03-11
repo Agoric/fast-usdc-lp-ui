@@ -5,11 +5,20 @@ import { ThemeProvider, useTheme } from '@interchain-ui/react';
 import { useEffect, useState } from 'react';
 import Content from './components/Content';
 import { toast, type Id as ToastId } from 'react-toastify';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import FAQ from './components/FAQ';
 import Terms from './components/Terms';
 
 import '@agoric/react-components/dist/style.css';
+
+// Custom hook to scroll to top on route changes
+const useScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+};
 
 const localnet = {
   testChain: {
@@ -41,7 +50,9 @@ const mainnet = {
   },
 };
 
-function App() {
+function AppContent() {
+  useScrollToTop();
+
   const { themeClass } = useTheme();
   const [errorId, setErrorId] = useState<ToastId | undefined>(undefined);
   const [error, setError] = useState<unknown | null>(null);
@@ -59,24 +70,30 @@ function App() {
   };
 
   return (
+    <div className={themeClass}>
+      <AgoricProvider
+        wallets={wallets.extension}
+        agoricNetworkConfigs={[localnet, devnet, mainnet]}
+        onConnectionError={onError}
+        modalTheme={{ defaultTheme: 'light' }}
+        defaultChainName="agoric"
+      >
+        <AppBar />
+        <Routes>
+          <Route path="/" element={<Content />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/terms" element={<Terms />} />
+        </Routes>
+      </AgoricProvider>
+    </div>
+  );
+}
+
+function App() {
+  return (
     <BrowserRouter>
       <ThemeProvider defaultTheme="light">
-        <div className={themeClass}>
-          <AgoricProvider
-            wallets={wallets.extension}
-            agoricNetworkConfigs={[localnet, devnet, mainnet]}
-            onConnectionError={onError}
-            modalTheme={{ defaultTheme: 'light' }}
-            defaultChainName="agoric"
-          >
-            <AppBar />
-            <Routes>
-              <Route path="/" element={<Content />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/terms" element={<Terms />} />
-            </Routes>
-          </AgoricProvider>
-        </div>
+        <AppContent />
       </ThemeProvider>
     </BrowserRouter>
   );

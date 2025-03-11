@@ -53,10 +53,10 @@ const AppBar = () => {
   }, [activeIndex]);
 
   return (
-    <div className="w-full sticky top-0 z-50 sm:h-16 bg-white flex items-center justify-center lg:justify-between flex-row shadow-sm border-b border-gray-100 px-5 backdrop-blur-sm bg-white/95">
+    <div className="w-full sticky top-0 z-50 sm:h-16 bg-white/95 flex items-center justify-center lg:justify-between flex-row shadow-xs border-b border-gray-100/80 px-5 backdrop-blur-sm">
       <div className="hidden lg:flex flex-row justify-start items-center gap-3">
         <img className="h-10" src="Agoric-logo-color.svg" alt="Agoric Logo" />
-        <div className="h-6 w-px bg-gray-200 mx-1"></div>
+        <div className="h-6 w-px bg-gray-200/70 mx-1"></div>
         <h1 className="text-xl font-semibold text-gray-800">Fast USDC</h1>
       </div>
       <div className="flex flex-col m-2 sm:m-0 sm:flex-row justify-start sm:items-center gap-3">
@@ -100,7 +100,7 @@ const AppBar = () => {
           />
         </nav>
         {isNetworkDropdownVisible && <NetworkDropdown />}
-        <ConnectWalletButton className="bg-agoric-red p-2 px-4 h-11 rounded-md text-white hover:bg-opacity-90 active:bg-opacity-80 active:scale-98 transition-all outline-none ring-offset-2 focus:ring-2 focus:ring-agoric-red/30 shadow-sm hover:shadow" />
+        <ConnectWalletButton className="bg-agoric-red p-2 px-4 h-11 rounded-md text-white hover:bg-opacity-90 active:bg-opacity-80 active:scale-98 transition-all outline-none ring-offset-2 focus:ring-2 focus:ring-agoric-red/30 hover:shadow-sm" />
       </div>
     </div>
   );

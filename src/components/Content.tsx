@@ -9,11 +9,46 @@ import {
 } from '../store/poolMetricsStore';
 import Shimmer from './Shimmer';
 import Footer from './Footer';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Layout from './Layout';
 
 const Content = () => {
   const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw'>('deposit');
+  const depositTabRef = useRef<HTMLButtonElement>(null);
+  const withdrawTabRef = useRef<HTMLButtonElement>(null);
+  const [indicatorStyle, setIndicatorStyle] = useState({
+    left: '0',
+    width: '50%',
+  });
+
+  // Update indicator position based on active tab
+  useEffect(() => {
+    const updateIndicator = () => {
+      const activeTabRef =
+        activeTab === 'deposit'
+          ? depositTabRef.current
+          : withdrawTabRef.current;
+
+      if (activeTabRef) {
+        const tabsContainer = activeTabRef.parentElement;
+        const { offsetLeft, offsetWidth } = activeTabRef;
+
+        if (tabsContainer) {
+          setIndicatorStyle({
+            left: `${offsetLeft}px`,
+            width: `${offsetWidth}px`,
+          });
+        }
+      }
+    };
+
+    updateIndicator();
+    window.addEventListener('resize', updateIndicator);
+
+    return () => {
+      window.removeEventListener('resize', updateIndicator);
+    };
+  }, [activeTab]);
 
   usePoolMetricsData();
   const metrics = usePoolMetricsStore(state => state.metrics);
@@ -91,49 +126,55 @@ const Content = () => {
           </div>
 
           <div className="space-y-4">
-            {/* Total Pool Balance */}
-            <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100 transition-all duration-300 hover:border-agoric-red/30 group">
-              <div className="text-gray-600 font-medium text-sm flex items-center">
+            {/* Total Pool Balance - Simplified design with no borders or shadows */}
+            <div className="px-4 py-3 hover:bg-gray-50/40 transition-all duration-300 rounded-lg group">
+              <div className="text-gray-700 font-medium text-sm mb-1">
                 Total Pool Balance
               </div>
-              <div className="text-xl font-bold text-gray-800 mt-1 transition-all duration-300 group-hover:translate-x-1">
+              <div className="text-xl font-bold text-gray-800 transition-all duration-300 group-hover:translate-x-1">
                 {isMetricsLoading ? (
                   <Shimmer height="28px" width="100px" />
                 ) : (
                   `$${poolBalanceForDisplay ?? '0'}`
                 )}
               </div>
-              <div className="text-gray-500 text-xs mt-1">USDC</div>
+              <div className="text-gray-500 text-xs">USDC</div>
             </div>
 
-            {/* Awaiting Settlement */}
-            <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100 transition-all duration-300 hover:border-agoric-red/30 group">
-              <div className="text-gray-600 font-medium text-sm flex items-center">
+            {/* Subtle divider */}
+            <div className="h-px bg-gray-100/70 w-full mx-4"></div>
+
+            {/* Awaiting Settlement - Simplified design */}
+            <div className="px-4 py-3 hover:bg-gray-50/40 transition-all duration-300 rounded-lg group">
+              <div className="text-gray-700 font-medium text-sm mb-1">
                 Awaiting Settlement
               </div>
-              <div className="text-xl font-bold text-gray-800 mt-1 transition-all duration-300 group-hover:translate-x-1">
+              <div className="text-xl font-bold text-gray-800 transition-all duration-300 group-hover:translate-x-1">
                 {isMetricsLoading ? (
                   <Shimmer height="28px" width="100px" />
                 ) : (
                   `$${awaitingSettlementForDisplay ?? '0'}`
                 )}
               </div>
-              <div className="text-gray-500 text-xs mt-1">USDC</div>
+              <div className="text-gray-500 text-xs">USDC</div>
             </div>
 
-            {/* Pool Fees Earned */}
-            <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100 transition-all duration-300 hover:border-agoric-red/30 group">
-              <div className="text-gray-600 font-medium text-sm flex items-center">
+            {/* Subtle divider */}
+            <div className="h-px bg-gray-100/70 w-full mx-4"></div>
+
+            {/* Pool Fees Earned - Simplified design */}
+            <div className="px-4 py-3 hover:bg-gray-50/40 transition-all duration-300 rounded-lg group">
+              <div className="text-gray-700 font-medium text-sm mb-1">
                 Pool Fees Earned
               </div>
-              <div className="text-xl font-bold text-gray-800 mt-1 transition-all duration-300 group-hover:translate-x-1">
+              <div className="text-xl font-bold text-gray-800 transition-all duration-300 group-hover:translate-x-1">
                 {isMetricsLoading ? (
                   <Shimmer height="28px" width="100px" />
                 ) : (
                   `$${poolFeesForDisplay ?? '0'}`
                 )}
               </div>
-              <div className="text-gray-500 text-xs mt-1">USDC</div>
+              <div className="text-gray-500 text-xs">USDC</div>
             </div>
           </div>
         </div>
@@ -146,19 +187,20 @@ const Content = () => {
           <div className="w-full text-xl font-semibold mb-5 text-center md:text-left bg-[#EBF9F9] py-2 px-4 rounded shadow-sm border-l-4 border-agoric-red/70">
             Your Pool Share
           </div>
-          {/* User's Pool Share Info */}
-          <div className="mb-6 p-3 bg-white rounded-lg shadow-sm border border-gray-100 group">
+
+          {/* User's Pool Share Info - More minimal with no borders or backgrounds */}
+          <div className="mb-6 px-2">
             <table className="w-full">
               <tbody>
                 {/* LP Token amount */}
-                <tr>
-                  <td className="py-1">
-                    <span className="text-gray-600 font-medium">
+                <tr className="border-b border-gray-50/50">
+                  <td className="py-2 px-3">
+                    <span className="text-gray-700 font-medium">
                       LP Tokens:
                     </span>
                   </td>
-                  <td className="text-right py-1">
-                    <span className="text-2xl font-bold text-gray-800 transition-all duration-300">
+                  <td className="text-right py-2 px-3">
+                    <span className="text-2xl font-bold text-gray-800">
                       {isPoolShareLoading ? (
                         <Shimmer
                           height="30px"
@@ -175,14 +217,14 @@ const Content = () => {
                 </tr>
 
                 {/* Current pool share value in USDC*/}
-                <tr>
-                  <td className="py-1">
-                    <span className="text-gray-600 font-medium">
+                <tr className="border-b border-gray-50/50">
+                  <td className="py-2 px-3">
+                    <span className="text-gray-700 font-medium">
                       Current Value:
                     </span>
                   </td>
-                  <td className="text-right py-1">
-                    <span className="text-gray-700 font-semibold transition-all duration-300 inline-block">
+                  <td className="text-right py-2 px-3">
+                    <span className="text-gray-700 font-semibold inline-block">
                       {isPoolShareLoading ? (
                         <Shimmer height="21px" width="80px" />
                       ) : (
@@ -194,13 +236,13 @@ const Content = () => {
 
                 {/* Percentage of total pool share */}
                 <tr>
-                  <td className="py-1">
-                    <span className="text-gray-600 font-medium">
+                  <td className="py-2 px-3">
+                    <span className="text-gray-700 font-medium">
                       Percentage:
                     </span>
                   </td>
-                  <td className="text-right py-1">
-                    <span className="text-gray-700 font-semibold flex items-center justify-end transition-all duration-300">
+                  <td className="text-right py-2 px-3">
+                    <span className="text-gray-700 font-semibold flex items-center justify-end">
                       {isPoolShareLoading ? (
                         <Shimmer height="22px" width="80px" />
                       ) : address ? (
@@ -219,34 +261,46 @@ const Content = () => {
               </tbody>
             </table>
           </div>
-          {/* Combined Deposit and Withdraw Section in a single card */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 transition-all duration-300">
-            {/* Tabs for Deposit and Withdraw with fixed height to prevent layout shift */}
-            <div className="flex border-b border-gray-200 h-14">
+
+          {/* Combined Deposit and Withdraw Section with minimal design */}
+          <div className="transition-all duration-300">
+            {/* Tabs for Deposit and Withdraw with cleaner design and animated indicator */}
+            <div className="flex border-b border-gray-100 h-12 relative">
               <button
+                ref={depositTabRef}
                 onClick={() => setActiveTab('deposit')}
-                className={`w-1/2 py-3 px-4 text-center font-semibold transition-all duration-200 h-full ${
+                className={`w-1/2 py-3 px-4 text-center font-medium transition-all duration-200 h-full ${
                   activeTab === 'deposit'
-                    ? 'text-gray-800 border-b-2 border-agoric-red/70 bg-gray-50/50'
-                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50/30'
+                    ? 'text-agoric-red'
+                    : 'text-gray-500 hover:text-gray-700'
                 }`}
               >
                 Deposit USDC
               </button>
               <button
+                ref={withdrawTabRef}
                 onClick={() => setActiveTab('withdraw')}
-                className={`w-1/2 py-3 px-4 text-center font-semibold transition-all duration-200 h-full ${
+                className={`w-1/2 py-3 px-4 text-center font-medium transition-all duration-200 h-full ${
                   activeTab === 'withdraw'
-                    ? 'text-gray-800 border-b-2 border-agoric-red/70 bg-gray-50/50'
-                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50/30'
+                    ? 'text-agoric-red'
+                    : 'text-gray-500 hover:text-gray-700'
                 }`}
               >
                 Withdraw USDC
               </button>
+
+              {/* Animated tab indicator */}
+              <div
+                className="absolute bottom-0 h-0.5 bg-agoric-red/70 transition-all duration-300 ease-in-out"
+                style={{
+                  left: indicatorStyle.left,
+                  width: indicatorStyle.width,
+                }}
+              ></div>
             </div>
 
-            {/* Tab Content */}
-            <div className="p-5">
+            {/* Tab Content with simplified padding */}
+            <div className="p-4">
               {activeTab === 'deposit' ? (
                 <Deposit shareWorth={shareWorth} showMaxButton={true} />
               ) : (
