@@ -99,7 +99,7 @@ BY CLICKING THE "I AGREE" BUTTON, YOU ARE INDICATING THAT YOU HAVE READ AND CONS
       </div>
 
       {/* Terms & Conditions Content */}
-      <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 prose prose-slate prose-headings:font-bold prose-headings:text-gray-800 prose-p:text-gray-700 prose-ul:text-gray-700 prose-li:my-1 prose-strong:font-bold prose-strong:text-gray-800 max-w-none">
+      <div className="bg-white rounded-xl shadow-md p-6 md:p-8 prose prose-slate prose-headings:font-bold prose-headings:text-gray-800 prose-p:text-gray-700 prose-p:leading-relaxed prose-ul:text-gray-700 prose-li:my-1 prose-li:text-gray-600 prose-strong:font-bold prose-strong:text-gray-800 max-w-none transition-all duration-300 hover:shadow-lg border border-gray-100/80">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>
           {termsMarkdown}
         </ReactMarkdown>

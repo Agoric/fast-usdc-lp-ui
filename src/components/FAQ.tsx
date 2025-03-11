@@ -149,11 +149,11 @@ If you experience any issues:
 
       <div className="top-0 left-1/2 transform mx-auto w-16 h-1 bg-agoric-red/70 rounded-full mb-8"></div>
 
-      <div className="space-y-4">
+      <div className="space-y-5">
         {faqSections.map((section, index) => (
           <div
             key={index}
-            className="border border-gray-200 rounded-lg overflow-hidden shadow-sm"
+            className="border border-gray-200 rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:border-gray-300/80"
           >
             <button
               className="w-full px-6 py-4 text-left bg-white hover:bg-gray-50 flex justify-between items-center focus:outline-none"
@@ -190,7 +190,7 @@ If you experience any issues:
               }`}
             >
               <div className="overflow-hidden">
-                <div className="px-6 py-4 bg-white border-t border-gray-200 prose prose-slate max-w-none">
+                <div className="px-6 py-5 bg-white border-t border-gray-200 prose prose-slate max-w-none prose-headings:text-gray-700 prose-p:leading-relaxed prose-ul:space-y-1 prose-li:text-gray-600">
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>
                     {section.content}
                   </ReactMarkdown>

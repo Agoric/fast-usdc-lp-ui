@@ -70,22 +70,22 @@ const Content = () => {
   return (
     <Layout>
       {/* Page header */}
-      <div className="text-center mb-8 relative">
-        <div className="relative py-3 px-4 mb-2">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mt-3 mb-2">
+      <div className="text-center mb-9 relative">
+        <div className="relative py-4 px-4 mb-3">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mt-2 mb-3">
             Fast USDC Liquidity Pool
           </h1>
-          <p className="text-gray-600 max-w-xl mx-auto">
+          <p className="text-gray-600 max-w-xl mx-auto leading-relaxed">
             Provide liquidity to enable instant USDC transfers across chains,
             earning fees while supporting the ecosystem.
           </p>
         </div>
-        <div className="top-0 left-1/2 transform mx-auto w-16 h-1 bg-agoric-red/70 rounded-full"></div>
+        <div className="top-0 left-1/2 transform mx-auto w-16 h-1 bg-agoric-red/70 rounded-full mb-1"></div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-0 relative bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-xl">
-        {/* Overall Pool Details Card - Top on mobile, right on desktop */}
-        <div className="rounded-tr-lg rounded-tl-lg md:rounded-tl-none rounded-t-lg md:rounded-tr-lg md:rounded-br-lg p-5 md:p-6 md:col-span-4 order-1 md:order-2 bg-gradient-to-br from-white to-gray-50 relative transition-all duration-300">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-0 relative bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-lg">
+        {/* Pool Details Card - Top on mobile, right on desktop */}
+        <div className="rounded-tr-lg rounded-tl-lg md:rounded-tl-none rounded-t-lg md:rounded-tr-lg md:rounded-br-lg p-5 md:p-6 md:col-span-4 order-1 md:order-2 bg-gradient-to-br from-white to-gray-50/70 relative transition-all duration-300">
           <div className="w-full text-xl font-semibold mb-5 text-center md:text-left bg-[#EBF9F9] py-2 px-4 rounded shadow-sm border-l-4 border-agoric-red/70">
             Pool Details
           </div>
@@ -146,124 +146,116 @@ const Content = () => {
           <div className="w-full text-xl font-semibold mb-5 text-center md:text-left bg-[#EBF9F9] py-2 px-4 rounded shadow-sm border-l-4 border-agoric-red/70">
             Your Pool Share
           </div>
-          <div className="px-3 md:px-4 pb-4">
-            {/* User's Pool Share Info */}
-            <div className="mb-6 p-3 bg-white rounded-lg shadow-sm border border-gray-100 group">
-              <table className="w-full">
-                <tbody>
-                  {/* LP Token amount */}
-                  <tr>
-                    <td className="py-1">
-                      <span className="text-gray-600 font-medium">
-                        LP Tokens:
-                      </span>
-                    </td>
-                    <td className="text-right py-1">
-                      <span className="text-2xl font-bold text-gray-800 transition-all duration-300">
-                        {isPoolShareLoading ? (
-                          <Shimmer
-                            height="30px"
-                            width="100px"
-                            className="float-right"
-                          />
-                        ) : address ? (
-                          stringifyValue(
-                            fastLPBalance?.value ?? 0n,
-                            'nat',
-                            6,
-                            4,
-                          )
-                        ) : (
-                          '0'
-                        )}
-                      </span>
-                    </td>
-                  </tr>
+          {/* User's Pool Share Info */}
+          <div className="mb-6 p-3 bg-white rounded-lg shadow-sm border border-gray-100 group">
+            <table className="w-full">
+              <tbody>
+                {/* LP Token amount */}
+                <tr>
+                  <td className="py-1">
+                    <span className="text-gray-600 font-medium">
+                      LP Tokens:
+                    </span>
+                  </td>
+                  <td className="text-right py-1">
+                    <span className="text-2xl font-bold text-gray-800 transition-all duration-300">
+                      {isPoolShareLoading ? (
+                        <Shimmer
+                          height="30px"
+                          width="100px"
+                          className="float-right"
+                        />
+                      ) : address ? (
+                        stringifyValue(fastLPBalance?.value ?? 0n, 'nat', 6, 4)
+                      ) : (
+                        '0'
+                      )}
+                    </span>
+                  </td>
+                </tr>
 
-                  {/* Current pool share value in USDC*/}
-                  <tr>
-                    <td className="py-1">
-                      <span className="text-gray-600 font-medium">
-                        Current Value:
-                      </span>
-                    </td>
-                    <td className="text-right py-1">
-                      <span className="text-gray-700 font-semibold transition-all duration-300 inline-block">
-                        {isPoolShareLoading ? (
-                          <Shimmer height="21px" width="80px" />
-                        ) : (
-                          `$${stringifyValue(maxAvailableToWithdraw ?? 0n, 'nat', 6, 4)}`
-                        )}
-                      </span>
-                    </td>
-                  </tr>
+                {/* Current pool share value in USDC*/}
+                <tr>
+                  <td className="py-1">
+                    <span className="text-gray-600 font-medium">
+                      Current Value:
+                    </span>
+                  </td>
+                  <td className="text-right py-1">
+                    <span className="text-gray-700 font-semibold transition-all duration-300 inline-block">
+                      {isPoolShareLoading ? (
+                        <Shimmer height="21px" width="80px" />
+                      ) : (
+                        `$${stringifyValue(maxAvailableToWithdraw ?? 0n, 'nat', 6, 4)}`
+                      )}
+                    </span>
+                  </td>
+                </tr>
 
-                  {/* Percentage of total pool share */}
-                  <tr>
-                    <td className="py-1">
-                      <span className="text-gray-600 font-medium">
-                        Percentage:
-                      </span>
-                    </td>
-                    <td className="text-right py-1">
-                      <span className="text-gray-700 font-semibold flex items-center justify-end transition-all duration-300">
-                        {isPoolShareLoading ? (
-                          <Shimmer height="22px" width="80px" />
-                        ) : address ? (
-                          <>
-                            <span className="text-agoric-red/90 font-bold mr-1">
-                              {poolSharePercent ?? 0}%
-                            </span>{' '}
-                            of pool
-                          </>
-                        ) : (
-                          'No wallet connected'
-                        )}
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                {/* Percentage of total pool share */}
+                <tr>
+                  <td className="py-1">
+                    <span className="text-gray-600 font-medium">
+                      Percentage:
+                    </span>
+                  </td>
+                  <td className="text-right py-1">
+                    <span className="text-gray-700 font-semibold flex items-center justify-end transition-all duration-300">
+                      {isPoolShareLoading ? (
+                        <Shimmer height="22px" width="80px" />
+                      ) : address ? (
+                        <>
+                          <span className="text-agoric-red/90 font-bold mr-1">
+                            {poolSharePercent ?? 0}%
+                          </span>{' '}
+                          of pool
+                        </>
+                      ) : (
+                        'No wallet connected'
+                      )}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          {/* Combined Deposit and Withdraw Section in a single card */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 transition-all duration-300">
+            {/* Tabs for Deposit and Withdraw with fixed height to prevent layout shift */}
+            <div className="flex border-b border-gray-200 h-14">
+              <button
+                onClick={() => setActiveTab('deposit')}
+                className={`w-1/2 py-3 px-4 text-center font-semibold transition-all duration-200 h-full ${
+                  activeTab === 'deposit'
+                    ? 'text-gray-800 border-b-2 border-agoric-red/70 bg-gray-50/50'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50/30'
+                }`}
+              >
+                Deposit USDC
+              </button>
+              <button
+                onClick={() => setActiveTab('withdraw')}
+                className={`w-1/2 py-3 px-4 text-center font-semibold transition-all duration-200 h-full ${
+                  activeTab === 'withdraw'
+                    ? 'text-gray-800 border-b-2 border-agoric-red/70 bg-gray-50/50'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50/30'
+                }`}
+              >
+                Withdraw USDC
+              </button>
             </div>
 
-            {/* Combined Deposit and Withdraw Section in a single card */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-100 transition-all duration-300">
-              {/* Tabs for Deposit and Withdraw with fixed height to prevent layout shift */}
-              <div className="flex border-b border-gray-200 h-14">
-                <button
-                  onClick={() => setActiveTab('deposit')}
-                  className={`w-1/2 py-3 px-4 text-center font-semibold transition-all duration-200 h-full ${
-                    activeTab === 'deposit'
-                      ? 'text-gray-800 border-b-2 border-agoric-red/70'
-                      : 'text-gray-600 hover:text-gray-800'
-                  }`}
-                >
-                  Deposit USDC
-                </button>
-                <button
-                  onClick={() => setActiveTab('withdraw')}
-                  className={`w-1/2 py-3 px-4 text-center font-semibold transition-all duration-200 h-full ${
-                    activeTab === 'withdraw'
-                      ? 'text-gray-800 border-b-2 border-agoric-red/70'
-                      : 'text-gray-600 hover:text-gray-800'
-                  }`}
-                >
-                  Withdraw USDC
-                </button>
-              </div>
-
-              {/* Tab Content */}
-              <div className="p-5">
-                {activeTab === 'deposit' ? (
-                  <Deposit shareWorth={shareWorth} showMaxButton={true} />
-                ) : (
-                  <Withdraw
-                    availableToWithdraw={availableToWithdraw}
-                    shareWorth={shareWorth}
-                    showMaxButton={true}
-                  />
-                )}
-              </div>
+            {/* Tab Content */}
+            <div className="p-5">
+              {activeTab === 'deposit' ? (
+                <Deposit shareWorth={shareWorth} showMaxButton={true} />
+              ) : (
+                <Withdraw
+                  availableToWithdraw={availableToWithdraw}
+                  shareWorth={shareWorth}
+                  showMaxButton={true}
+                />
+              )}
             </div>
           </div>
         </div>
