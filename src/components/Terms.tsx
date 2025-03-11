@@ -1,5 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import Layout from './Layout';
 
 const Terms = () => {
   // This markdown content is from the Google Doc
@@ -53,7 +54,7 @@ The Site may include content and materials provided by third parties ("Third-Par
 
 THE SITE AND FAST USDC, INCLUDING WITHOUT LIMITATION ANY RELATED PRODUCTS OR SERVICES, ARE PROVIDED ON AN AS-IS AND AS-AVAILABLE BASIS. YOU AGREE THAT YOUR USE OF THE SITE AND OUR SERVICES WILL BE AT YOUR SOLE RISK. TO THE FULLEST EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, IN CONNECTION WITH THE SITE AND YOUR USE THEREOF, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE MAKE NO WARRANTIES OR REPRESENTATIONS ABOUT THE ACCURACY OR COMPLETENESS OF THE SITE'S CONTENT OR ANY THIRD-PARTY CONTENT AND WE WILL ASSUME NO LIABILITY OR RESPONSIBILITY FOR ANY (1) LOSS OR DAMAGE OF ANY KIND INCURRED AS A RESULT OF YOUR ACCESS TO AND USE OF SITE OR OF ANY CONTENT POSTED, TRANSMITTED, OR OTHERWISE MADE AVAILABLE VIA THE SITE OR AS A RESULT OF A THIRD PARTY'S INTERACTIONS WITH THE SITE, BLOCKCHAIN NETWORKS, IBC, OR THEIR UNDERLYING BLOCKCHAIN TECHNOLOGIES, INCLUDING ANY LOSS OR THEFT OF, OR INABILITY TO USE, ANY DIGITAL ASSETS. MOREOVER, YOU ACKNOWLEDGE AND AGREE THAT YOUR USE OR INTERACTION WITH BLOCKCHAIN NETWORKS, OR IBC IS AT YOUR OWN RISK AND AGORIC WAIVES ALL LIABILITY OR RESPONSIBILITY, AND MAKES NO WARRANTIES, RELATED TO BLOCKCHAIN NETWORKS, OR IBC, WHETHER OR NOT THESE ARE ACCESSED VIA OUR SITE.
 
-1. No professional advice. The content and information presented on or through the Site is made available solely for informational purposes. and should not be construed as professional advice (including, without limitation, tax, legal, or financial advice). Moreover, in no case should any information be construed as Agoric's offer to buy, sell, or exchange crypto-assets. ​​You recommend you conduct your own diligence and consult a professional advisor before making any decisions relating to our use of the information provided via the Site.
+1. No professional advice. The content and information presented on or through the Site is made available solely for informational purposes. and should not be construed as professional advice (including, without limitation, tax, legal, or financial advice). Moreover, in no case should any information be construed as Agoric's offer to buy, sell, or exchange crypto-assets. You recommend you conduct your own diligence and consult a professional advisor before making any decisions relating to our use of the information provided via the Site.
 2. No insurance. Your crypto accounts are not checking or savings accounts. We do not provide any kind of insurance to you against any type of loss, including (without limitation) losses due to decrease in value of assets, assets lost due to a cybersecurity failure, or from your or other individuals' errors or malfeasance. In most jurisdictions crypto-assets are not considered legal tender, and most crypto-assets are not backed by any government. Neither your crypto-asset balances nor any of your transactions via the Site are covered by Federal Deposit Insurance Corporation ("FDIC"), Securities Investor Protection Corporation ("SIPC"), or other similar protections.
 3. No fiduciary duty. These Terms are not intended to create any fiduciary duties between us and you or any third party. Agoric never takes possession, custody, control, ownership, or management of any crypto-assets or other property transmitted via the Site. To the fullest extent permissible by law, you agree that your use of the Site does not cause us or any other user to owe fiduciary duties or liabilities to your or any third party, and if any such duties or liabilities are afforded by law or by equity, they are hereby irrevocably disclaimed, waived, and eliminated to the fullest extent permissible by law.
 
@@ -88,25 +89,22 @@ g. Electronic Communications, Transactions, and Signatures. Visiting the Site, s
 BY CLICKING THE "I AGREE" BUTTON, YOU ARE INDICATING THAT YOU HAVE READ AND CONSENT TO BE BOUND BY THESE TERMS. IF YOU HAVE NOT READ THESE TERMS, OR YOU DO NOT AGREE TO BE LEGALLY BOUND BY THEM, CLICK "I DON'T AGREE" AND DO NOT USE THE SITE.`;
 
   return (
-    <div className="p-6 md:p-9 max-w-[100rem] mx-auto bg-gray-50">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8 relative">
-          <div className="hidden md:block absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-agoric-red opacity-50"></div>
-          <div className="hidden md:block absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-agoric-red opacity-50"></div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
-            Terms & Conditions
-          </h1>
-        </div>
-
-        {/* Terms & Conditions Content */}
-        <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 prose prose-slate prose-headings:font-bold prose-headings:text-gray-800 prose-p:text-gray-700 prose-ul:text-gray-700 prose-li:my-1 prose-strong:font-bold prose-strong:text-gray-800 max-w-none">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {termsMarkdown}
-          </ReactMarkdown>
-        </div>
+    <Layout>
+      {/* Header */}
+      <div className="text-center my-8 relative">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          Terms & Conditions
+        </h1>
+        <div className="top-0 left-1/2 transform mx-auto w-16 h-1 bg-agoric-red/70 rounded-full mt-6 mb-8"></div>
       </div>
-    </div>
+
+      {/* Terms & Conditions Content */}
+      <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 prose prose-slate prose-headings:font-bold prose-headings:text-gray-800 prose-p:text-gray-700 prose-ul:text-gray-700 prose-li:my-1 prose-strong:font-bold prose-strong:text-gray-800 max-w-none">
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {termsMarkdown}
+        </ReactMarkdown>
+      </div>
+    </Layout>
   );
 };
 

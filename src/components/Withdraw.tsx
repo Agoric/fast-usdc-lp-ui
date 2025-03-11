@@ -1,7 +1,7 @@
 import { type makeRatio } from '@agoric/zoe/src/contractSupport/index.js';
 import { AmountInput, useAgoric } from '@agoric/react-components';
 import { stringifyValue } from '@agoric/web-components';
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
 import { divideBy } from '@agoric/zoe/src/contractSupport/ratio';
@@ -21,8 +21,6 @@ const Withdraw = ({
 }: Props) => {
   const [value, setValue] = useState<bigint | null>(null);
   const [inProgress, setInProgress] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const inputRef = useRef<HTMLDivElement>(null);
   const { makeOffer, purses, address } = useAgoric();
   const usdcPurseAmount = purses?.find(
     ({ pursePetname }) => pursePetname === 'USDC',
@@ -40,30 +38,10 @@ const Withdraw = ({
 
   const isLoading = !!address && availableToWithdraw === null;
 
-  // Check if current value equals max
   const isMaxSelected =
     value !== null &&
     availableToWithdraw !== null &&
     value === availableToWithdraw;
-
-  // Handle focus events on the wrapper
-  useEffect(() => {
-    const handleFocusIn = () => setIsFocused(true);
-    const handleFocusOut = () => setIsFocused(false);
-
-    const container = inputRef.current;
-    if (container) {
-      container.addEventListener('focusin', handleFocusIn);
-      container.addEventListener('focusout', handleFocusOut);
-    }
-
-    return () => {
-      if (container) {
-        container.removeEventListener('focusin', handleFocusIn);
-        container.removeEventListener('focusout', handleFocusOut);
-      }
-    };
-  }, []);
 
   const setMaxAmount = () => {
     if (availableToWithdraw) {
@@ -132,12 +110,9 @@ const Withdraw = ({
         )}
         <div className="mb-2">
           <div
-            ref={inputRef}
             className={clsx(
-              'flex items-center overflow-hidden border rounded-lg bg-white pr-3 transition-all',
-              isFocused
-                ? 'border-agoric-red ring-1 ring-agoric-red ring-opacity-50'
-                : 'border-gray-300',
+              'flex items-center overflow-hidden border rounded-lg bg-white pr-3 transition-all border-gray-300',
+              'focus-within:border-agoric-red focus-within:ring-1 focus-within:ring-agoric-red focus-within:ring-opacity-50',
             )}
           >
             <div className="flex-grow">
@@ -184,7 +159,7 @@ const Withdraw = ({
               <span className="font-medium">Max Withdrawable:</span>{' '}
               {isLoading ? (
                 <Shimmer
-                  height="18px"
+                  height="16px"
                   width="120px"
                   className="inline-block align-middle ml-1 -mt-[2px]"
                 />

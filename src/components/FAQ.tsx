@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Footer from './Footer';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import Layout from './Layout';
 
 type FAQSection = {
   title: string;
@@ -141,10 +142,12 @@ If you experience any issues:
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
+    <Layout>
+      <h1 className="text-3xl font-bold text-center my-8 text-gray-800">
         Fast USDC Liquidity Pool - Frequently Asked Questions
       </h1>
+
+      <div className="top-0 left-1/2 transform mx-auto w-16 h-1 bg-agoric-red/70 rounded-full mb-8"></div>
 
       <div className="space-y-4">
         {faqSections.map((section, index) => (
@@ -159,7 +162,9 @@ If you experience any issues:
               <h3 className="text-lg font-medium text-gray-800">
                 {section.title}
               </h3>
-              <span className="text-gray-600">
+              <span
+                className={`${expandedSections.has(index) ? 'text-agoric-red/80' : 'text-gray-600'} transition-colors duration-300`}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className={`h-5 w-5 transition-transform duration-300 ${
@@ -197,7 +202,7 @@ If you experience any issues:
       </div>
 
       <Footer />
-    </div>
+    </Layout>
   );
 };
 

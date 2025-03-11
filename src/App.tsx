@@ -1,6 +1,6 @@
 import { AgoricProvider } from '@agoric/react-components';
 import { wallets } from 'cosmos-kit';
-import Header from './components/Header';
+import AppBar from './components/AppBar';
 import { ThemeProvider, useTheme } from '@interchain-ui/react';
 import { useEffect, useState } from 'react';
 import Content from './components/Content';
@@ -69,7 +69,7 @@ function App() {
             modalTheme={{ defaultTheme: 'light' }}
             defaultChainName="agoric"
           >
-            <Header />
+            <AppBar />
             <Routes>
               <Route path="/" element={<Content />} />
               <Route path="/faq" element={<FAQ />} />
