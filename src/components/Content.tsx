@@ -11,6 +11,7 @@ import Shimmer from './Shimmer';
 import Footer from './Footer';
 import { useState, useRef, useEffect } from 'react';
 import Layout from './Layout';
+import PageHeading from './PageHeading';
 
 const Content = () => {
   const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw'>('deposit');
@@ -104,19 +105,10 @@ const Content = () => {
 
   return (
     <Layout>
-      {/* Page header */}
-      <div className="text-center mb-9 relative">
-        <div className="relative py-4 px-4 mb-3">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mt-2 mb-3">
-            Fast USDC Liquidity Pool
-          </h1>
-          <p className="text-gray-600 max-w-xl mx-auto leading-relaxed">
-            Provide liquidity to enable instant USDC transfers across chains,
-            earning fees while supporting the ecosystem.
-          </p>
-        </div>
-        <div className="top-0 left-1/2 transform mx-auto w-16 h-1 bg-agoric-red/70 rounded-full mb-1"></div>
-      </div>
+      <PageHeading
+        title="Fast USDC Liquidity Pool"
+        subtitle="Provide liquidity to enable instant USDC transfers across chains, earning fees while supporting the ecosystem."
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-0 relative bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-lg">
         {/* Pool Details Card - Top on mobile, right on desktop */}

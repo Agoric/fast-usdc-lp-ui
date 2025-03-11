@@ -1,6 +1,7 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Layout from './Layout';
+import PageHeading from './PageHeading';
 
 const Terms = () => {
   // This markdown content is from the Google Doc
@@ -90,13 +91,7 @@ BY CLICKING THE "I AGREE" BUTTON, YOU ARE INDICATING THAT YOU HAVE READ AND CONS
 
   return (
     <Layout>
-      {/* Header */}
-      <div className="text-center my-8 relative">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
-          Terms & Conditions
-        </h1>
-        <div className="top-0 left-1/2 transform mx-auto w-16 h-1 bg-agoric-red/70 rounded-full mt-6 mb-8"></div>
-      </div>
+      <PageHeading title="Terms & Conditions" />
 
       {/* Terms & Conditions Content */}
       <div className="bg-white rounded-xl shadow-md p-6 md:p-8 prose prose-slate prose-headings:font-bold prose-headings:text-gray-800 prose-p:text-gray-700 prose-p:leading-relaxed prose-ul:text-gray-700 prose-li:my-1 prose-li:text-gray-600 prose-strong:font-bold prose-strong:text-gray-800 max-w-none transition-all duration-300 hover:shadow-lg border border-gray-100/80">

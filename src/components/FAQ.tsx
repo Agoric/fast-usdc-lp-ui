@@ -3,6 +3,7 @@ import Footer from './Footer';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Layout from './Layout';
+import PageHeading from './PageHeading';
 
 type FAQSection = {
   title: string;
@@ -143,11 +144,7 @@ If you experience any issues:
 
   return (
     <Layout>
-      <h1 className="text-3xl font-bold text-center my-8 text-gray-800">
-        Fast USDC Liquidity Pool - Frequently Asked Questions
-      </h1>
-
-      <div className="top-0 left-1/2 transform mx-auto w-16 h-1 bg-agoric-red/70 rounded-full mb-8"></div>
+      <PageHeading title="Fast USDC Liquidity Pool - Frequently Asked Questions" />
 
       <div className="space-y-4">
         {faqSections.map((section, index) => (
