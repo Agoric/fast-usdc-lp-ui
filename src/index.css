@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --agoric-red: 204, 66, 70;
+  --agoric-red: 215, 50, 82;
 }
 
 @keyframes shimmerWave {

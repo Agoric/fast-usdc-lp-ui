@@ -1,8 +1,13 @@
 import { useState } from 'react';
+import Footer from './Footer';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import Layout from './Layout';
+import PageHeading from './PageHeading';
 
 type FAQSection = {
   title: string;
-  content: React.ReactNode;
+  content: string;
 };
 
 const FAQ = () => {
@@ -25,239 +30,138 @@ const FAQ = () => {
   const faqSections: FAQSection[] = [
     {
       title: 'What does Fast USDC do?',
-      content: (
-        <p>
-          <b>Fast USDC</b> is a product built with Agoric's on-chain
-          Orchestration API. It helps speed up USDC transfers between chains by
-          reducing wait times for users coming from EVM chains.
-          <br />
-          <br />
-          Instead of waiting for the standard CCTP bridge to finalize, a{' '}
-          <b>Liquidity Provider</b> can front the USDC to the user right away,
-          knowing the official transfer is on its way. LPs can earn fees from
-          users that are willing to pay to get their funds quickly to the End
-          destination.
-        </p>
-      ),
+      content: `
+**Fast USDC** is a product built with Agoric's on-chain Orchestration API. It helps speed up USDC transfers between chains by reducing wait times for users coming from EVM chains.
+
+Instead of waiting for the standard CCTP bridge to finalize, a **Liquidity Provider** can front the USDC to the user right away, knowing the official transfer is on its way. LPs can earn fees from users that are willing to pay to get their funds quickly to the End destination.
+      `,
     },
     {
       title: 'Dashboard Overview',
-      content: (
-        <div>
-          <p>
-            <strong>What information can I see on my Dashboard?</strong>
-          </p>
-          <p>Your Dashboard displays four key metrics:</p>
-          <ul className="list-disc pl-6 mt-2">
-            <li>Total Pool Balance: The total amount of USDC in the pool</li>
-            <li>
-              Your Pool Share: Your share amount and percentage of the total
-              pool
-            </li>
-            <li>
-              Awaiting Settlement: Amount of your USDC currently being processed
-            </li>
-            <li>
-              Pool Fees Earned: Total earned fees by the entire pool in USDC
-            </li>
-          </ul>
-        </div>
-      ),
+      content: `
+**What information can I see on my Dashboard?**
+
+Your Dashboard displays four key metrics:
+
+* Total Pool Balance: The total amount of USDC in the pool
+* Your Pool Share: Your share amount and percentage of the total pool
+* Awaiting Settlement: Amount of your USDC currently being processed
+* Pool Fees Earned: Total earned fees by the entire pool in USDC
+      `,
     },
     {
       title: 'Wallet Connection',
-      content: (
-        <div>
-          <p>
-            <strong>How do I connect my wallet?</strong>
-          </p>
-          <p>
-            Use the wallet button in the top right corner of the interface. Your
-            wallet address will be displayed once connected.
-          </p>
+      content: `
+**How do I connect my wallet?**
 
-          <p className="mt-4">
-            <strong>Why does my balance show as $0.00?</strong>
-          </p>
-          <p>If all your balances show as $0.00, please verify:</p>
-          <ul className="list-disc pl-6 mt-2">
-            <li>Your wallet is properly connected</li>
-            <li>You're on the correct network</li>
-            <li>You have USDC in your wallet</li>
-          </ul>
-        </div>
-      ),
+Use the wallet button in the top right corner of the interface. Your wallet address will be displayed once connected.
+
+**Why does my balance show as $0.00?**
+
+If all your balances show as $0.00, please verify:
+
+* Your wallet is properly connected
+* You're on the correct network
+* You have USDC in your wallet
+      `,
     },
     {
       title: 'Deposits',
-      content: (
-        <div>
-          <p>
-            <strong>How do I deposit USDC to the pool?</strong>
-          </p>
-          <ol className="list-decimal pl-6 mt-2">
-            <li>Check your Purse Balance in the Deposit USDC section</li>
-            <li>Enter an amount up to your available purse balance</li>
-            <li>
-              If you don't have any USDC, you may source it from
-              https://www.usdc.com/
-            </li>
-            <li>Click the "Deposit" button</li>
-            <li>Confirm the transaction in your wallet</li>
-          </ol>
+      content: `
+**How do I deposit USDC to the pool?**
 
-          <p className="mt-4">
-            <strong>What's the minimum deposit amount?</strong>
-          </p>
-          <p>
-            You can deposit any amount up to your Purse Balance, but always
-            consider gas fees especially when making smaller deposits.
-          </p>
+1. Check your Purse Balance in the Deposit USDC section
+2. Enter an amount up to your available purse balance
+3. If you don't have any USDC, you may source it from [https://usdc.com](https://www.usdc.com/)
+4. Click the "Deposit" button
+5. Confirm the transaction in your wallet
 
-          <p className="mt-4">
-            <strong>
-              What happens if I enter an amount greater than my balance?
-            </strong>
-          </p>
-          <p>
-            The system will prevent you from depositing more than your available
-            Purse Balance.
-          </p>
-        </div>
-      ),
+**What's the minimum deposit amount?**
+
+You can deposit any amount up to your Purse Balance, but always consider gas fees especially when making smaller deposits.
+
+**What happens if I enter an amount greater than my balance?**
+
+The system will prevent you from depositing more than your available Purse Balance.
+      `,
     },
     {
       title: 'Withdrawals',
-      content: (
-        <div>
-          <p>
-            <strong>How do I withdraw my USDC?</strong>
-          </p>
-          <ol className="list-decimal pl-6 mt-2">
-            <li>Go to the "Withdraw USDC" section</li>
-            <li>Enter the amount you wish to withdraw</li>
-            <li>Verify it's within your maximum withdrawable amount</li>
-            <li>Click the "Withdraw" button to process</li>
-          </ol>
+      content: `
+**How do I withdraw my USDC?**
 
-          <p className="mt-4">
-            <strong>What is "Max Withdrawable"?</strong>
-          </p>
-          <p>
-            The Max Withdrawable amount shown below the withdrawal input field
-            indicates the maximum USDC you can currently withdraw based on your
-            pool share and available liquidity.
-          </p>
+1. Go to the "Withdraw USDC" section
+2. Enter the amount you wish to withdraw
+3. Verify it's within your maximum withdrawable amount
+4. Click the "Withdraw" button to process
 
-          <p className="mt-4">
-            <strong>
-              Why might my max withdrawable amount be different from my pool
-              share?
-            </strong>
-          </p>
-          <p>
-            Your max withdrawable amount might be lower than your total pool
-            share if:
-          </p>
-          <ul className="list-disc pl-6 mt-2">
-            <li>There are pending settlements</li>
-            <li>There are active bridge transactions being processed</li>
-          </ul>
-        </div>
-      ),
+**What is "Max Withdrawable"?**
+
+The Max Withdrawable amount shown below the withdrawal input field indicates the maximum USDC you can currently withdraw based on your pool share and available liquidity.
+
+**Why might my max withdrawable amount be different from my pool share?**
+
+Your max withdrawable amount might be lower than your total pool share if:
+
+* There are pending settlements
+* There are active bridge transactions being processed
+      `,
     },
     {
       title: 'Pool Metrics',
-      content: (
-        <div>
-          <p>
-            <strong>How can I track my position in the pool?</strong>
-          </p>
-          <p>
-            Your Dashboard currently only shows your percentage share of the
-            total pool. It is your responsibility to track the USDC amounts you
-            have deposited, and you may use the percentage share displayed in
-            your Dashboard to calculate the value of your position.
-          </p>
+      content: `
+**How can I track my position in the pool?**
 
-          <p className="mt-4">
-            <strong>Why is my pool share shown as a percentage?</strong>
-          </p>
-          <p>
-            The percentage helps you understand your proportional ownership of
-            the pool, which determines your share of fees and withdrawal rights.
-          </p>
+Your Dashboard currently only shows your percentage share of the total pool. It is your responsibility to track the USDC amounts you have deposited, and you may use the percentage share displayed in your Dashboard to calculate the value of your position.
 
-          <p className="mt-4">
-            <strong>How do I start earning fees?</strong>
-          </p>
-          <p>To start earning fees:</p>
-          <ol className="list-decimal pl-6 mt-2">
-            <li>
-              Deposit some of your available USDC from the Purse Balance into
-              the pool
-            </li>
-            <li>
-              Maintain your position while the pool facilitates bridging
-              transactions
-            </li>
-            <li>Fees will accumulate based on your pool share percentage</li>
-          </ol>
-        </div>
-      ),
+**Why is my pool share shown as a percentage?**
+
+The percentage helps you understand your proportional ownership of the pool, which determines your share of fees and withdrawal rights.
+
+**How do I start earning fees?**
+
+To start earning fees:
+
+1. Deposit some of your available USDC from the Purse Balance into the pool
+2. Maintain your position while the pool facilitates bridging transactions
+3. Fees will accumulate based on your pool share percentage
+      `,
     },
     {
       title: 'Support',
-      content: (
-        <div>
-          <p>
-            <strong>What should I do if I encounter issues?</strong>
-          </p>
-          <p>If you experience any issues:</p>
-          <ol className="list-decimal pl-6 mt-2">
-            <li>
-              Join the Agoric Discord:{' '}
-              <a
-                href="https://agoric.com/discord"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:text-blue-700 underline"
-              >
-                https://agoric.com/discord
-              </a>
-            </li>
-            <li>Select the community role in the onboarding page</li>
-            <li>
-              Go to #get-roles channel (unlocked for server members) and select
-              the Fast USDC LP role
-            </li>
-            <li>Go to #fast-usdc-lp-support channel</li>
-          </ol>
-        </div>
-      ),
+      content: `
+**What should I do if I encounter issues?**
+
+If you experience any issues:
+
+1. Join the Agoric Discord: [https://agoric.com/discord](https://agoric.com/discord)
+2. Select the community role in the onboarding page
+3. Go to *#get-roles channel* (unlocked for server members) and select the Fast USDC LP role
+4. Go to *#fast-usdc-lp-support* channel
+      `,
     },
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
-        Fast USDC Liquidity Pool - Frequently Asked Questions
-      </h1>
+    <Layout>
+      <PageHeading title="Fast USDC Liquidity Pool - Frequently Asked Questions" />
 
       <div className="space-y-4">
         {faqSections.map((section, index) => (
           <div
             key={index}
-            className="border border-gray-200 rounded-lg overflow-hidden shadow-sm"
+            className="border border-gray-100 rounded-lg overflow-hidden transition-all duration-300 hover:border-gray-200"
           >
             <button
-              className="w-full px-6 py-4 text-left bg-white hover:bg-gray-50 flex justify-between items-center focus:outline-none"
+              className="w-full px-6 py-4 text-left bg-white hover:bg-gray-50/70 flex justify-between items-center focus:outline-none"
               onClick={() => toggleSection(index)}
             >
               <h3 className="text-lg font-medium text-gray-800">
                 {section.title}
               </h3>
-              <span className="text-gray-600">
+              <span
+                className={`${expandedSections.has(index) ? 'text-agoric-red' : 'text-gray-400'} transition-colors duration-300`}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className={`h-5 w-5 transition-transform duration-300 ${
@@ -283,15 +187,19 @@ const FAQ = () => {
               }`}
             >
               <div className="overflow-hidden">
-                <div className="px-6 py-4 bg-white border-t border-gray-200">
-                  {section.content}
+                <div className="px-6 py-5 bg-gray-50/30 border-t border-gray-100 prose prose-slate max-w-none prose-headings:text-gray-700 prose-p:leading-relaxed prose-ul:space-y-1 prose-li:text-gray-600">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {section.content}
+                  </ReactMarkdown>
                 </div>
               </div>
             </div>
           </div>
         ))}
       </div>
-    </div>
+
+      <Footer />
+    </Layout>
   );
 };
 
