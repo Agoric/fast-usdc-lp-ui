@@ -7,7 +7,7 @@ import PageHeading from './PageHeading';
 
 type FAQSection = {
   title: string;
-  content: string; // Changed from React.ReactNode to string for markdown
+  content: string;
 };
 
 const FAQ = () => {
