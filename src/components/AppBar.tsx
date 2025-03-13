@@ -66,9 +66,9 @@ const AppBar = () => {
               ref={homeRef}
               to="/"
               className={({ isActive }) =>
-                `text-lg py-2 transition-all duration-200 ${
+                `text-lg py-2 relative ${
                   isActive
-                    ? 'text-agoric-red font-medium'
+                    ? 'text-agoric-red'
                     : 'text-gray-700 hover:text-agoric-red'
                 }`
               }
@@ -79,9 +79,9 @@ const AppBar = () => {
               ref={faqRef}
               to="/faq"
               className={({ isActive }) =>
-                `text-lg py-2 transition-all duration-200 ${
+                `text-lg py-2 relative ${
                   isActive
-                    ? 'text-agoric-red font-medium'
+                    ? 'text-agoric-red'
                     : 'text-gray-700 hover:text-agoric-red'
                 }`
               }
