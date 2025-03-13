@@ -118,9 +118,8 @@ const Content = () => {
       ? (fastLPBalance.value * 10_000n) / shareWorth.denominator.value
       : null;
 
-  const poolSharePercent = poolShareBPS
-    ? (Number(poolShareBPS) / 100).toFixed(2)
-    : null;
+  const poolSharePercent =
+    poolShareBPS !== null ? (Number(poolShareBPS) / 100).toFixed(2) : null;
 
   const isMetricsLoading = metrics === null;
 
