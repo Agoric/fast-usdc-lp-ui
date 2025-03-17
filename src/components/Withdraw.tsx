@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { divideBy } from '@agoric/zoe/src/contractSupport/ratio';
 import { Oval } from 'react-loader-spinner';
 import Shimmer from './Shimmer';
+import { formatNumber } from '../utils/format';
 
 type Props = {
   availableToWithdraw: bigint | null;
@@ -164,7 +165,12 @@ const Withdraw = ({
                   className="inline-block align-middle ml-1 -mt-[2px]"
                 />
               ) : (
-                <>{stringifyValue(availableToWithdraw || 0n, 'nat', 6)} USDC</>
+                <>
+                  {formatNumber(
+                    stringifyValue(availableToWithdraw || 0n, 'nat', 6),
+                  )}{' '}
+                  USDC
+                </>
               )}
             </>
           )}
