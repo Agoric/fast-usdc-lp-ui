@@ -12,6 +12,7 @@ import Footer from './Footer';
 import { useState, useRef, useEffect } from 'react';
 import Layout from './Layout';
 import PageHeading from './PageHeading';
+import { formatNumber } from '../utils/format';
 
 const Content = () => {
   const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw'>('deposit');
@@ -167,7 +168,7 @@ const Content = () => {
                   {isMetricsLoading ? (
                     <Shimmer height="28px" width="100px" />
                   ) : (
-                    `$${poolBalanceForDisplay ?? '0'}`
+                    `$${formatNumber(poolBalanceForDisplay)}`
                   )}
                 </div>
                 <div className="text-gray-500 text-xs">USDC</div>
@@ -185,7 +186,7 @@ const Content = () => {
                   {isMetricsLoading ? (
                     <Shimmer height="28px" width="100px" />
                   ) : (
-                    `$${awaitingSettlementForDisplay ?? '0'}`
+                    `$${formatNumber(awaitingSettlementForDisplay)}`
                   )}
                 </div>
                 <div className="text-gray-500 text-xs">USDC</div>
@@ -203,7 +204,7 @@ const Content = () => {
                   {isMetricsLoading ? (
                     <Shimmer height="28px" width="100px" />
                   ) : (
-                    `$${poolFeesForDisplay ?? '0'}`
+                    `$${formatNumber(poolFeesForDisplay)}`
                   )}
                 </div>
                 <div className="text-gray-500 text-xs">USDC</div>
@@ -265,7 +266,7 @@ const Content = () => {
                         {isPoolShareLoading ? (
                           <Shimmer height="21px" width="80px" />
                         ) : (
-                          `$${stringifyValue(maxAvailableToWithdraw ?? 0n, 'nat', 6, 4)}`
+                          `$${formatNumber(stringifyValue(maxAvailableToWithdraw ?? 0n, 'nat', 6, 4))}`
                         )}
                       </span>
                     </td>

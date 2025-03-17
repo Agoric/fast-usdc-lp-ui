@@ -7,6 +7,7 @@ import { divideBy } from '@agoric/zoe/src/contractSupport/ratio';
 import { toast } from 'react-toastify';
 import { Oval } from 'react-loader-spinner';
 import Shimmer from './Shimmer';
+import { formatNumber } from '../utils/format';
 
 interface Props {
   shareWorth: ReturnType<typeof makeRatio> | undefined;
@@ -155,7 +156,7 @@ const Deposit = ({ shareWorth, showMaxButton = false }: Props) => {
                   className="inline-block align-middle ml-1 -mt-[2px]"
                 />
               ) : (
-                <>{stringifyValue(usdcBalance, 'nat', 6)} USDC</>
+                <>{formatNumber(stringifyValue(usdcBalance, 'nat', 6))} USDC</>
               )}
             </>
           )}
