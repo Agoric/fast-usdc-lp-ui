@@ -6,16 +6,16 @@ import clsx from 'clsx';
 import { divideBy } from '@agoric/zoe/src/contractSupport/ratio';
 import { toast } from 'react-toastify';
 import { Oval } from 'react-loader-spinner';
+import { IoIosSwap } from 'react-icons/io';
 import Shimmer from './Shimmer';
 import { formatNumber } from '../utils/format';
 import useToastStore from '../store/toast';
 
 interface Props {
   shareWorth: ReturnType<typeof makeRatio> | undefined;
-  showMaxButton?: boolean;
 }
 
-const Deposit = ({ shareWorth, showMaxButton = false }: Props) => {
+const Deposit = ({ shareWorth }: Props) => {
   const [value, setValue] = useState<bigint | null>(null);
   const [inProgress, setInProgress] = useState(false);
   const { toastId, setToastId } = useToastStore();
@@ -102,23 +102,34 @@ const Deposit = ({ shareWorth, showMaxButton = false }: Props) => {
   };
 
   return (
-    <div
-      className={
-        showMaxButton
-          ? ''
-          : 'bg-white rounded-lg shadow col-span-1 md:col-span-2 p-6'
-      }
-    >
-      {!showMaxButton && (
-        <div className="text-xl font-semibold mb-4">Deposit USDC</div>
-      )}
+    <div>
       <div>
-        {!showMaxButton && (
-          <div className="text-gray-500 font-semibold text-sm mb-1">
-            Amount to Deposit
+        <div className="mb-1">
+          <div
+            className={clsx(
+              'text-gray-500 text-sm mb-1',
+              isMaxExceeded && 'text-red-500',
+            )}
+          >
+            {!address ? (
+              <span>No wallet connected</span>
+            ) : (
+              <>
+                <span className="font-medium">Purse Balance:</span>{' '}
+                {isLoading ? (
+                  <Shimmer
+                    height="14px"
+                    width="120px"
+                    className="inline-block align-middle ml-1 -mt-[2px]"
+                  />
+                ) : (
+                  <>
+                    {formatNumber(stringifyValue(usdcBalance, 'nat', 6))} USDC
+                  </>
+                )}
+              </>
+            )}
           </div>
-        )}
-        <div className="mb-2">
           <div
             className={clsx(
               'flex items-center overflow-hidden border rounded-lg bg-white pr-3 transition-all border-gray-300',
@@ -134,51 +145,50 @@ const Deposit = ({ shareWorth, showMaxButton = false }: Props) => {
               />
             </div>
 
-            {showMaxButton && (
-              <button
-                onClick={setMaxAmount}
-                className={clsx(
-                  'flex-shrink-0 font-medium h-full py-1 px-3 text-xs transition-all',
-                  isMaxSelected
-                    ? 'bg-agoric-red bg-opacity-20 text-agoric-red font-bold shadow-sm rounded'
-                    : 'bg-gray-200 hover:bg-gray-300 text-gray-700 rounded',
-                )}
-                style={
-                  isMaxSelected
-                    ? {
-                        boxShadow: '0 0 6px rgba(220, 53, 69, 0.5)',
-                      }
-                    : {}
-                }
-              >
-                MAX
-              </button>
-            )}
+            <button
+              onClick={setMaxAmount}
+              className={clsx(
+                'flex-shrink-0 font-medium h-full py-1 px-3 text-xs transition-all',
+                isMaxSelected
+                  ? 'bg-agoric-red bg-opacity-20 text-agoric-red font-bold shadow-sm rounded'
+                  : 'bg-gray-200 hover:bg-gray-300 text-gray-700 rounded',
+              )}
+              style={
+                isMaxSelected
+                  ? {
+                      boxShadow: '0 0 6px rgba(220, 53, 69, 0.5)',
+                    }
+                  : {}
+              }
+            >
+              MAX
+            </button>
           </div>
         </div>
-        <div
-          className={clsx(
-            'text-gray-500 text-sm mb-3',
-            isMaxExceeded && 'text-red-500',
-          )}
-        >
-          {!address ? (
-            <span>No wallet connected</span>
-          ) : (
-            <>
-              <span className="font-medium">Purse Balance:</span>{' '}
-              {isLoading ? (
-                <Shimmer
-                  height="14px"
-                  width="120px"
-                  className="inline-block align-middle ml-1 -mt-[2px]"
-                />
-              ) : (
-                <>{formatNumber(stringifyValue(usdcBalance, 'nat', 6))} USDC</>
-              )}
-            </>
-          )}
-        </div>
+      </div>
+      <div className="mb-4 ml-1 text-sm text-gray-500">
+        <IoIosSwap className="inline-block w-4 h-4 mr-1 -mt-[2px]" />
+        {!shareWorth ? (
+          <Shimmer
+            height="14px"
+            width="80px"
+            className="inline-block align-middle ml-1 -mt-[2px]"
+          />
+        ) : usdcPurseAmount ? (
+          formatNumber(
+            stringifyValue(
+              divideBy(
+                harden({ brand: usdcPurseAmount?.brand, value: value ?? 0n }),
+                shareWorth,
+              ).value,
+              'nat',
+              6,
+            ),
+          )
+        ) : (
+          <span>0.00</span>
+        )}{' '}
+        LP Tokens
       </div>
       <button
         onClick={executeOffer}
