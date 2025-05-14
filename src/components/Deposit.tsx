@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { Oval } from 'react-loader-spinner';
 import Shimmer from './Shimmer';
 import { formatNumber } from '../utils/format';
+import useToastStore from '../store/toast';
 
 interface Props {
   shareWorth: ReturnType<typeof makeRatio> | undefined;
@@ -17,6 +18,7 @@ interface Props {
 const Deposit = ({ shareWorth, showMaxButton = false }: Props) => {
   const [value, setValue] = useState<bigint | null>(null);
   const [inProgress, setInProgress] = useState(false);
+  const { toastId, setToastId } = useToastStore();
 
   const { purses, makeOffer, address } = useAgoric();
   const usdcPurseAmount = purses?.find(
@@ -68,15 +70,31 @@ const Deposit = ({ shareWorth, showMaxButton = false }: Props) => {
       undefined,
       (update: { status: string; data?: unknown }) => {
         if (update.status === 'error') {
-          toast.error(`Offer Error: ${update.data}`);
+          if (toastId) {
+            toast.dismiss(toastId);
+          }
+          const id = toast.error(`Offer Error: ${update.data}`, {
+            autoClose: false,
+          });
+          setToastId(id);
           setInProgress(false);
         }
         if (update.status === 'accepted') {
+          if (toastId) {
+            toast.dismiss(toastId);
+            setToastId(null);
+          }
           toast.success('Offer Accepted');
           setInProgress(false);
         }
         if (update.status === 'refunded') {
-          toast.warning('Offer Refunded');
+          if (toastId) {
+            toast.dismiss(toastId);
+          }
+          const id = toast.warning('Offer Refunded', {
+            autoClose: false,
+          });
+          setToastId(id);
           setInProgress(false);
         }
       },

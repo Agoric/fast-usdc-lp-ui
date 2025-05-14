@@ -8,6 +8,7 @@ import { divideBy } from '@agoric/zoe/src/contractSupport/ratio';
 import { Oval } from 'react-loader-spinner';
 import Shimmer from './Shimmer';
 import { formatNumber } from '../utils/format';
+import useToastStore from '../store/toast';
 
 type Props = {
   availableToWithdraw: bigint | null;
@@ -26,6 +27,7 @@ const Withdraw = ({
   const usdcPurseAmount = purses?.find(
     ({ pursePetname }) => pursePetname === 'USDC',
   )?.currentAmount as Amount<'nat'>;
+  const { toastId, setToastId } = useToastStore();
 
   const isMaxExceeded =
     !!value && (!availableToWithdraw || value > availableToWithdraw);
@@ -77,15 +79,31 @@ const Withdraw = ({
       undefined,
       (update: { status: string; data?: unknown }) => {
         if (update.status === 'error') {
-          toast.error(`Offer Error: ${update.data}`);
+          if (toastId) {
+            toast.dismiss(toastId);
+          }
+          const id = toast.error(`Offer Error: ${update.data}`, {
+            autoClose: false,
+          });
+          setToastId(id);
           setInProgress(false);
         }
         if (update.status === 'accepted') {
+          if (toastId) {
+            toast.dismiss(toastId);
+            setToastId(null);
+          }
           toast.success('Offer Accepted');
           setInProgress(false);
         }
         if (update.status === 'refunded') {
-          toast.warning('Offer Refunded');
+          if (toastId) {
+            toast.dismiss(toastId);
+          }
+          const id = toast.warning('Offer Refunded', {
+            autoClose: false,
+          });
+          setToastId(id);
           setInProgress(false);
         }
       },
