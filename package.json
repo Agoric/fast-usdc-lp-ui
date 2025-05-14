@@ -39,6 +39,7 @@
     "globals": "^15.14.0",
     "postcss": "^8.4.49",
     "prettier": "^3.5.3",
+    "react-icons": "4.4.0",
     "react-loader-spinner": "6.1.6",
     "react-markdown": "^10.1.0",
     "react-toastify": "11.0.2",
