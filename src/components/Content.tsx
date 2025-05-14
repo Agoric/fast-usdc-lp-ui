@@ -340,12 +340,11 @@ const Content = () => {
               {/* Tab Content */}
               <div className="p-4">
                 {activeTab === 'deposit' ? (
-                  <Deposit shareWorth={shareWorth} showMaxButton={true} />
+                  <Deposit shareWorth={shareWorth} />
                 ) : (
                   <Withdraw
                     availableToWithdraw={availableToWithdraw}
                     shareWorth={shareWorth}
-                    showMaxButton={true}
                   />
                 )}
               </div>

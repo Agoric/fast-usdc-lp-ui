@@ -4,7 +4,10 @@ import { stringifyValue } from '@agoric/web-components';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
-import { divideBy } from '@agoric/zoe/src/contractSupport/ratio';
+import {
+  floorDivideBy,
+  floorMultiplyBy,
+} from '@agoric/zoe/src/contractSupport/ratio';
 import { Oval } from 'react-loader-spinner';
 import { IoIosSwap } from 'react-icons/io';
 import Shimmer from './Shimmer';
@@ -19,42 +22,91 @@ type Props = {
 const Withdraw = ({ availableToWithdraw, shareWorth }: Props) => {
   const [value, setValue] = useState<bigint | null>(null);
   const [inProgress, setInProgress] = useState(false);
+  const [isLpInput, setIsLpInput] = useState(false);
   const { makeOffer, purses, address } = useAgoric();
   const usdcPurseAmount = purses?.find(
     ({ pursePetname }) => pursePetname === 'USDC',
   )?.currentAmount as Amount<'nat'>;
   const { toastId, setToastId } = useToastStore();
 
+  const lpTokenBrand = shareWorth?.denominator.brand;
+
+  const maxLpTokens =
+    availableToWithdraw && shareWorth && usdcPurseAmount
+      ? floorDivideBy(
+          harden({ brand: usdcPurseAmount.brand, value: availableToWithdraw }),
+          shareWorth,
+        ).value
+      : null;
+
   const isMaxExceeded =
-    !!value && (!availableToWithdraw || value > availableToWithdraw);
+    !!value &&
+    (isLpInput
+      ? !maxLpTokens || value > maxLpTokens
+      : !availableToWithdraw || value > availableToWithdraw);
+
   const isDisabled =
     !value ||
     !shareWorth ||
     !usdcPurseAmount ||
     isMaxExceeded ||
     !makeOffer ||
-    !availableToWithdraw;
+    !availableToWithdraw ||
+    (isLpInput && !lpTokenBrand);
 
   const isLoading = !!address && availableToWithdraw === null;
 
   const isMaxSelected =
     value !== null &&
-    availableToWithdraw !== null &&
-    value === availableToWithdraw;
+    ((isLpInput && maxLpTokens && value === maxLpTokens) ||
+      (!isLpInput && availableToWithdraw && value === availableToWithdraw));
 
   const setMaxAmount = () => {
-    if (availableToWithdraw) {
+    if (isLpInput && maxLpTokens) {
+      setValue(maxLpTokens);
+    } else if (availableToWithdraw) {
       setValue(availableToWithdraw);
     }
   };
 
+  const toggleInputType = () => {
+    if (!shareWorth || !usdcPurseAmount?.brand || !lpTokenBrand) return;
+
+    if (value) {
+      if (isLpInput) {
+        // Convert LP to USDC
+        const lpAmount = harden({ brand: lpTokenBrand, value });
+        const usdcAmount = floorMultiplyBy(lpAmount, shareWorth);
+        setValue(usdcAmount.value);
+      } else {
+        // Convert USDC to LP
+        const usdcAmount = harden({ brand: usdcPurseAmount.brand, value });
+        const lpAmount = floorDivideBy(usdcAmount, shareWorth);
+        setValue(lpAmount.value);
+      }
+    }
+    setIsLpInput(!isLpInput);
+  };
+
   const executeOffer = () => {
-    if (inProgress) return;
-    const usdcAmount = harden({ brand: usdcPurseAmount.brand, value });
-    const fastLPAmount = divideBy(usdcAmount, shareWorth);
+    if (inProgress || !usdcPurseAmount?.brand || !shareWorth || !lpTokenBrand)
+      return;
+
+    // Calculate amounts based on input type
+    const usdcAmount = isLpInput
+      ? floorMultiplyBy(harden({ brand: lpTokenBrand, value }), shareWorth)
+      : harden({ brand: usdcPurseAmount.brand, value });
+
+    const lpAmount = isLpInput
+      ? harden({ brand: lpTokenBrand, value })
+      : floorDivideBy(
+          harden({ brand: usdcPurseAmount.brand, value }),
+          shareWorth,
+        );
+
     const proposal = {
       give: {
-        PoolShare: fastLPAmount,
+        PoolShare: lpAmount,
       },
       want: {
         USDC: usdcAmount,
@@ -120,7 +172,9 @@ const Withdraw = ({ availableToWithdraw, shareWorth }: Props) => {
               <span>No wallet connected</span>
             ) : (
               <>
-                <span className="font-medium">Max Withdrawable:</span>{' '}
+                <span className="font-medium">
+                  {isLpInput ? 'Max Redeemable:' : 'Max Withdrawable:'}
+                </span>{' '}
                 {isLoading ? (
                   <Shimmer
                     height="14px"
@@ -130,9 +184,15 @@ const Withdraw = ({ availableToWithdraw, shareWorth }: Props) => {
                 ) : (
                   <>
                     {formatNumber(
-                      stringifyValue(availableToWithdraw || 0n, 'nat', 6),
+                      stringifyValue(
+                        isLpInput
+                          ? maxLpTokens || 0n
+                          : availableToWithdraw || 0n,
+                        'nat',
+                        6,
+                      ),
                     )}{' '}
-                    USDC
+                    {isLpInput ? 'LP Tokens' : 'USDC'}
                   </>
                 )}
               </>
@@ -174,21 +234,29 @@ const Withdraw = ({ availableToWithdraw, shareWorth }: Props) => {
           </div>
         </div>
       </div>
-      <div className="mb-4 ml-1 text-sm text-gray-500">
+      <div
+        className="mb-4 ml-1 text-sm text-gray-500 cursor-pointer hover:text-gray-700 transition-colors"
+        onClick={toggleInputType}
+      >
         <IoIosSwap className="inline-block w-4 h-4 mr-1 -mt-[2px]" />
-        {!shareWorth ? (
+        {!shareWorth || !lpTokenBrand ? (
           <Shimmer
             height="14px"
             width="80px"
             className="inline-block align-middle ml-1 -mt-[2px]"
           />
-        ) : usdcPurseAmount ? (
+        ) : value && usdcPurseAmount?.brand ? (
           formatNumber(
             stringifyValue(
-              divideBy(
-                harden({ brand: usdcPurseAmount?.brand, value: value ?? 0n }),
-                shareWorth,
-              ).value,
+              isLpInput
+                ? floorMultiplyBy(
+                    harden({ brand: lpTokenBrand, value }),
+                    shareWorth,
+                  ).value
+                : floorDivideBy(
+                    harden({ brand: usdcPurseAmount.brand, value }),
+                    shareWorth,
+                  ).value,
               'nat',
               6,
             ),
@@ -196,7 +264,7 @@ const Withdraw = ({ availableToWithdraw, shareWorth }: Props) => {
         ) : (
           <span>0.00</span>
         )}{' '}
-        LP Tokens
+        {isLpInput ? 'USDC' : 'LP Tokens'}
       </div>
       <button
         onClick={executeOffer}
