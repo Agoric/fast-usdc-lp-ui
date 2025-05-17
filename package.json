@@ -18,8 +18,8 @@
   },
   "devDependencies": {
     "@agoric/ertp": "0.16.3-u18.1",
-    "@agoric/react-components": "0.3.0",
-    "@agoric/web-components": "0.16.0",
+    "@agoric/react-components": "0.4.0",
+    "@agoric/web-components": "0.17.0",
     "@agoric/zoe": "0.26.3-u18.1",
     "@endo/eventual-send": "^1.2.8",
     "@eslint/js": "^9.17.0",
