@@ -305,13 +305,13 @@
     "@endo/patterns" "^1.4.7"
     "@endo/promise-kit" "^1.1.8"
 
-"@agoric/react-components@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@agoric/react-components/-/react-components-0.3.0.tgz#c71403607b108a993383490cc4e10d310c808165"
-  integrity sha512-KX01JbP/CAoDUDylreWHwamtQYQZYecu0H2K5od6C/nsX+5tsah46ibxFSOeJhmiy6WgirUTCuxgY+fg4/79OQ==
+"@agoric/react-components@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@agoric/react-components/-/react-components-0.4.0.tgz#4db5cc91170186747de43f8e882c2b43b1747610"
+  integrity sha512-cMVlVdnZ9P155tKYHvViArtZWUWnMUIwtSFmVgMiYONOw41mRtqjUPCh7gcWP78zQL1mVBLUrrFIXWChSg33RQ==
   dependencies:
     "@agoric/rpc" "^0.10.0"
-    "@agoric/web-components" "^0.16.0"
+    "@agoric/web-components" "^0.17.0"
     "@cosmos-kit/core" "2.8.9"
     "@cosmos-kit/react" "2.10.10"
     "@interchain-ui/react" "1.21.18"
@@ -668,10 +668,10 @@
     "@endo/patterns" "^1.4.7"
     "@endo/promise-kit" "^1.1.8"
 
-"@agoric/web-components@0.16.0", "@agoric/web-components@^0.16.0":
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/@agoric/web-components/-/web-components-0.16.0.tgz#e812302aa6efad065172dd2a4bf035385e12d692"
-  integrity sha512-em3vUItZu9ktjIrg5btzQfsUs+poFf7dR2ZS232RsHgh+2H+STyxPt0s5u1ZJs2DKBg7ljDZ/gZdoy9wQvsz7A==
+"@agoric/web-components@0.17.0", "@agoric/web-components@^0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@agoric/web-components/-/web-components-0.17.0.tgz#654e3fa07fdf0a2b6db40d8903b9be2972b1676b"
+  integrity sha512-eOgWAoRH7XpoGgVErInae/DrVFMLz4+Sj6NDNU1kLS6RxiW5/nC89FIRZHoVSO5YDisZnBuXh4seLlvzKtBbrg==
   dependencies:
     "@agoric/assert" "^0.6.0"
     "@agoric/cache" "^0.3.2"
